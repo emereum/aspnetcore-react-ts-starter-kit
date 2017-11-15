@@ -1,0 +1,14 @@
+packages
+.vs
+bin
+obj
+*.suo
+*.user
+*.lock.json
+TestResult.xml
+
+# Chocolatey artifacts
+*.nupkg
+
+# Local config files
+*.local.json

@@ -116,7 +116,7 @@ module.exports = class extends Generator {
                 "!**/*.local.json",
                 
                 "!**/node_modules",
-                "!**/node_modules/**",
+                // "!**/node_modules/**", // Causes strange file copy errors
                 "!**/coverage",
                 "!**/coverage/**",
                 "!**/build",
