@@ -88,6 +88,11 @@ module.exports = class extends Generator {
                 this.registerTransformStream(replace(findRegex, replaceValue));
             }.bind(this));
         }.bind(this));
+        
+        // Rename .npmignore to .gitignore
+         this.registerTransformStream(rename(function(path) {
+            path.basename = path.basename.replace(".npmignore", ".gitignore");
+        }));
     }
     
     _copyTemplateToOutputFolder() {
