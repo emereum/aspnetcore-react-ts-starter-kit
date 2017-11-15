@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "name": "generator-hoflogic-spa",
   "description": "Generates an ASP.NET Core web API and a React + MobX SPA in TypeScript using Yeoman",
   "files": [
