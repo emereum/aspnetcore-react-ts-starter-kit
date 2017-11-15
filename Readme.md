@@ -1,6 +1,6 @@
 # generator-hoflogic-spa
 
-This is a Yeoman generator which generates an ASP.NET Core web Api and a React + MobX SPA in TypeScript. Navigate to the [template readme file](generators/app/templates/Readme.md) to see information about the output of this generator.
+This is a Yeoman generator which generates an ASP.NET Core web Api and a React + MobX SPA in TypeScript. Navigate to the [template readme file](generators/app/templates/README.md) to see information about the output of this generator.
 
 
 # Developing This Script
