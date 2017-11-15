@@ -1,0 +1,65 @@
+pipeline {
+  agent {
+    label {
+        label ""
+        customWorkspace "D:/jnkwkspc/templateproductname/${BRANCH_NAME}"
+    }
+  }
+  triggers {
+    pollSCM("*/5 * * * *")
+  }
+  options {
+    disableConcurrentBuilds()
+  }
+  stages {
+    stage("Clean") {
+      steps {
+        bat "git clean -fdx"
+      }
+    }
+    stage("Build") {
+      steps {
+        parallel(
+          "Build WebApi": {
+            bat "rake build_webapi_thunk"
+          },
+          "Build & Test WebClient": {
+            bat "rake build_webclient_thunk"
+          }
+        )
+      }
+    }
+    stage("Test WebApi") {
+      steps {
+        bat "rake test_webapi_thunk"
+      }
+    }
+    stage("Publish Test Results") {
+      steps {
+        nunit(failIfNoResults: true, testResultsPattern: "TestResult.xml")
+      }
+    }
+    stage("Deploy to Test") {
+      when {
+        branch "test"
+      }
+      steps {
+        timeout(time: 10, unit: "MINUTES") {
+          input message: "Would you like to deploy this build to the test environment?", ok: "Deploy to test"
+        }
+        bat "rake pack_thunk deploy_to_thunk[test]"
+      }
+    }
+    stage("Deploy to Prod") {
+      when {
+        branch "prod"
+      }
+      steps {
+        timeout(time: 10, unit: "MINUTES") {
+          input message: "Would you like to deploy this build to the prod environment?", ok: "Deploy to prod"
+        }
+        bat "rake pack_thunk deploy_to_thunk[prod]"
+      }
+    }
+  }
+}

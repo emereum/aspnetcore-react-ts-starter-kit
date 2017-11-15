@@ -1,0 +1,20 @@
+create table template_product_name.dinosaurs
+(
+    id serial not null
+        constraint attributes_pkey
+            primary key,
+    code text not null
+        constraint attributes_code_key
+            unique,
+    name text not null
+);
+
+do $$
+begin
+if '${environment}' = 'dev' then
+    
+    -- Invoke some commands that should only be run in dev
+    
+end if;
+end
+$$;

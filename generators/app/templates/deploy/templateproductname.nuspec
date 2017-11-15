@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>templateproductname</id>
+    <version>1.0.0</version>
+    <title>TemplateProductName</title>
+    <authors>Template Author Name</authors>
+    <tags>templateproductname</tags>
+    <summary>TemplateProductName</summary>
+    <description>TemplateProductName</description>
+  </metadata>
+  <files>
+    <file src="serversettings.json" target="serversettings.json" />
+    <file src="tools\**" target="tools" />
+    <file src="..\src\TemplateProductName.WebApi\bin\Release\net462\publish\" target="TemplateProductName.WebApi" />
+    <file src="..\database\" target="database" />
+  </files>
+</package>
