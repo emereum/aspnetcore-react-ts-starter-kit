@@ -1,0 +1,121 @@
+root = true
+
+# See https://docs.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options
+# See https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-code-style-settings-reference
+# See https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-naming-conventions
+
+[*.cs]
+# Language conventions
+dotnet_style_qualification_for_field = false:error
+dotnet_style_qualification_for_property = false:error
+dotnet_style_qualification_for_method = false:error
+dotnet_style_qualification_for_event = false:error
+dotnet_style_predefined_type_for_locals_parameters_members = true:error
+dotnet_style_predefined_type_for_member_access = true:error
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:error
+csharp_preferred_modifier_order = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:error
+dotnet_style_object_initializer = true:suggestion
+dotnet_style_collection_initializer = true:error
+dotnet_style_explicit_tuple_names = true:error
+dotnet_style_coalesce_expression = true:error
+dotnet_style_null_propagation = true:error
+csharp_style_var_for_built_in_types = true:error
+csharp_style_var_when_type_is_apparent = true:error
+csharp_style_var_elsewhere = true:error
+csharp_style_expression_bodied_methods = true:error
+csharp_style_expression_bodied_constructors = true:error
+csharp_style_expression_bodied_operators = true:error
+csharp_style_expression_bodied_properties = true:error
+csharp_style_expression_bodied_indexers = true:error
+csharp_style_expression_bodied_accessors = true:error
+csharp_style_pattern_matching_over_is_with_cast_check = true:error
+csharp_style_pattern_matching_over_as_with_null_check = true:error
+csharp_style_inlined_variable_declaration = true:suggestion
+csharp_prefer_simple_default_expression = true:error
+csharp_style_deconstructed_variable_declaration = true:error
+csharp_style_pattern_local_over_anonymous_function = true:suggestion
+csharp_style_throw_expression = true:error
+csharp_style_conditional_delegate_call = true:error
+csharp_prefer_braces = true:error
+
+# Formatting conventions
+indent_style = space
+indent_size = 4
+end_of_line = crlf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+dotnet_sort_system_directives_first = true # Broken: https://github.com/madskristensen/EditorConfigLanguage/issues/20
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = true
+csharp_new_line_before_members_in_anonymous_types = true
+csharp_new_line_between_query_expression_clauses = true
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = no_change
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_parentheses = false
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = true
+
+# Naming conventions
+# See https://gist.github.com/jmarolf/f53955b5ebc5f8ff8f3ce6ad5f64ce31
+# See https://docs.microsoft.com/en-us/visualstudio/ide/editorconfig-naming-conventions
+
+## Symbol declarations
+
+	### Classes, structs, interfaces, and enums
+	dotnet_naming_symbols.all_classes_structs_interfaces_enums.applicable_kinds = class,struct,interface,enum
+	dotnet_naming_symbols.all_classes_structs_interfaces_enums.applicable_accessibilities = *
+
+	### Interfaces
+	dotnet_naming_symbols.interfaces.applicable_kinds = interface
+	dotnet_naming_symbols.interfaces.applicable_accessibilities = *
+
+	### Non-private properties and fields
+	dotnet_naming_symbols.non_private_properties.applicable_kinds = property,field
+	dotnet_naming_symbols.non_private_properties.applicable_accessibilities = public,internal,protected,protected_internal
+
+	### Private properties and fields
+	dotnet_naming_symbols.private_properties.applicable_kinds = property,field
+	dotnet_naming_symbols.private_properties.applicable_accessibilities = private
+
+	### Methods
+	dotnet_naming_symbols.methods.applicable_kinds = method
+	dotnet_naming_symbols.methods.applicable_accessibilities = *
+
+## Style declarations
+	
+	### PascalCase
+	dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+	### camelCase
+	dotnet_naming_style.camel_case_style.capitalization = camel_case
+
+## Rules (enforcement of styles to symbols)
+
+	### Class names must be PascalCase
+	dotnet_naming_rule.class_names_must_be_pascal_case.symbols = all_classes_structs_interfaces_enums
+	dotnet_naming_rule.class_names_must_be_pascal_case.style = pascal_case_style
+	dotnet_naming_rule.class_names_must_be_pascal_case.severity = error
+
+	### Public properties must be PascalCase
+	dotnet_naming_rule.public_properties_must_be_pascal_case.symbols = non_private_properties
+	dotnet_naming_rule.public_properties_must_be_pascal_case.style = pascal_case_style
+	dotnet_naming_rule.public_properties_must_be_pascal_case.severity = error
+
+	### Private properties must be camelCase
+	dotnet_naming_rule.private_properties_must_be_camel_case.symbols = private_properties
+	dotnet_naming_rule.private_properties_must_be_camel_case.style = camel_case_style
+	dotnet_naming_rule.private_properties_must_be_camel_case.severity = error
+	
+	### Methods must be PascalCase
+	dotnet_naming_rule.methods_must_be_pascal_case.symbols = methods
+	dotnet_naming_rule.methods_must_be_pascal_case.style = pascal_case_style
+	dotnet_naming_rule.methods_must_be_pascal_case.severity = error
