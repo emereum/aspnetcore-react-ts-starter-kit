@@ -1,4 +1,4 @@
-﻿namespace TemplateProductName.Domain.Repositories
+namespace TemplateProductName.Domain.Repositories
 {
     /// <summary>
     /// Represents an atomic set of operations which all succeed or all fail

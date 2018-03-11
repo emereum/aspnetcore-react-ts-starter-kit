@@ -1,4 +1,4 @@
-﻿namespace TemplateProductName.Domain.Queries
+namespace TemplateProductName.Domain.Queries
 {
     public interface IPaginationOptions
     {

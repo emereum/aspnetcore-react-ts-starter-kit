@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using TemplateProductName.Tests.Extensions;
 
@@ -9,7 +9,7 @@ namespace TemplateProductName.Tests.Infrastructure.AutoTest.AutoTests
     /// A function must be provided as an argument which accepts a string and
     /// creates an entity in the repository with that string as an identifier.
     /// </summary>
-    class MustExistInRepository : IAutoTest
+    public class MustExistInRepository : IAutoTest
     {
         public bool CanTest(object testFixture, string testName, object[] args) =>
             testName.EndsWith("MustExistInRepository") && testFixture is ICommandHandlerTest;
@@ -24,11 +24,17 @@ namespace TemplateProductName.Tests.Infrastructure.AutoTest.AutoTests
             // Get TestFixture.Command.{propName}
             var propName = testName.Substring(0, testName.Length - "MustExistInRepository".Length);
             var propInfo = command.GetType().GetProperty(propName);
-            if (propInfo == null) throw new InvalidOperationException($"Couldn't find property {propName} on command {command.GetType().Name}");
+            if (propInfo == null)
+            {
+                throw new InvalidOperationException($"Couldn't find property {propName} on command {command.GetType().Name}");
+            }
 
             // Get repository method
             var repositoryMethod = args?.SingleOrDefault() as Action<string>;
-            if (repositoryMethod == null) throw new InvalidOperationException($"Expected a function argument that accepts a string and adds a record to the repository. Got {args}.");
+            if (repositoryMethod == null)
+            {
+                throw new InvalidOperationException($"Expected a function argument that accepts a string and adds a record to the repository. Got {args}.");
+            }
 
             // Add an item to the repository
             repositoryMethod.Invoke("imhere");

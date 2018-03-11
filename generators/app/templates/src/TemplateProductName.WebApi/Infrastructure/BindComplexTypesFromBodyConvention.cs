@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -28,16 +28,14 @@ namespace TemplateProductName.WebApi.Infrastructure
             }
         }
 
-        private static bool IsSimpleType(Type type)
-        {
-            return type.IsPrimitive ||
-                   type == typeof(string) ||
-                   type == typeof(DateTime) ||
-                   type == typeof(decimal) ||
-                   type == typeof(Guid) ||
-                   type == typeof(DateTimeOffset) ||
-                   type == typeof(TimeSpan);
-        }
+        private static bool IsSimpleType(Type type) =>
+            type.IsPrimitive ||
+            type == typeof(string) ||
+            type == typeof(DateTime) ||
+            type == typeof(decimal) ||
+            type == typeof(Guid) ||
+            type == typeof(DateTimeOffset) ||
+            type == typeof(TimeSpan);
 
         private static bool IsSimpleUnderlyingType(Type type)
         {

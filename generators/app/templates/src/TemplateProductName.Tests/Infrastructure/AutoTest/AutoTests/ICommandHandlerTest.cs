@@ -1,8 +1,8 @@
-﻿using TemplateProductName.Common;
+using TemplateProductName.Common;
 
 namespace TemplateProductName.Tests.Infrastructure.AutoTest.AutoTests
 {
-    interface ICommandHandlerTest
+    public interface ICommandHandlerTest
     {
         object GetCommand();
         Errors Handle();

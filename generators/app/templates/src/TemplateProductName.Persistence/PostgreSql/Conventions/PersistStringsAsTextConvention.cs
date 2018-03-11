@@ -1,4 +1,4 @@
-﻿using FluentNHibernate.Conventions;
+using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
 using FluentNHibernate.Conventions.Instances;
@@ -13,15 +13,12 @@ namespace TemplateProductName.Persistence.PostgreSQL.Conventions
     /// All responsibility for string length validation is left to the
     /// application when using this convention.
     /// </summary>
-    class PersistStringsAsTextConvention : IPropertyConvention, IPropertyConventionAcceptance
+    public class PersistStringsAsTextConvention : IPropertyConvention, IPropertyConventionAcceptance
     {
-        public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
-        {
+        public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria) =>
             criteria.Expect(x => x.Type == typeof(string));
-        }
-        public void Apply(IPropertyInstance instance)
-        {
+
+        public void Apply(IPropertyInstance instance) =>
             instance.CustomSqlType("text");
-        }
     }
 }

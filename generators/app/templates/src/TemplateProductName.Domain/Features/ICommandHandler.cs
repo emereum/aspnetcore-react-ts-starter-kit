@@ -1,4 +1,4 @@
-﻿namespace TemplateProductName.Domain.Features
+namespace TemplateProductName.Domain.Features
 {
     public interface ICommandHandler<in TCommand, out TResult>
     {

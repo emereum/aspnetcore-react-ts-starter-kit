@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text.RegularExpressions;
 using FluentValidation.Validators;
 
@@ -35,9 +35,7 @@ namespace TemplateProductName.Common
                 : new Regex(@"^-?\d{0," + wholeNumbers + @"}(\.\d{0," + decimalNumbers + "})?$");
         }
 
-        protected override bool IsValid(PropertyValidatorContext context)
-        {
-            return context.PropertyValue == null || regex.IsMatch(context.PropertyValue.ToString());
-        }
+        protected override bool IsValid(PropertyValidatorContext context) =>
+            context.PropertyValue == null || regex.IsMatch(context.PropertyValue.ToString());
     }
 }

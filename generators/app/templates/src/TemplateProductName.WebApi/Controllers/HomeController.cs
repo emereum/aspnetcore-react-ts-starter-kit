@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TemplateProductName.WebApi.Controllers
 {
@@ -6,9 +6,6 @@ namespace TemplateProductName.WebApi.Controllers
     public class HomeController : Controller
     {
         [HttpGet]
-        public IActionResult Index()
-        {
-            return Json(new { HelloWorld = "TemplateProductName" });
-        }
+        public IActionResult Index() => Json(new { HelloWorld = "TemplateProductName" });
     }
 }

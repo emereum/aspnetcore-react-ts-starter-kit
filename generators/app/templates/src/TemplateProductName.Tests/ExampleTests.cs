@@ -1,13 +1,10 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace TemplateProductName.Tests
 {
-    class ExampleTests
+    public class ExampleTests
     {
         [Test]
-        public void Example()
-        {
-            Assert.Pass();
-        }
+        public void Example() => Assert.Pass();
     }
 }

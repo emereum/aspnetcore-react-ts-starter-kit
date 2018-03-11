@@ -9,21 +9,15 @@ namespace TemplateProductName.Common
     public static class FluentValidationExtensions
     {
         public static IRuleBuilderOptions<T, TProperty> NumberFormat<T, TProperty>(
-            this IRuleBuilderOptions<T, TProperty> builder, string format)
-        {
-            return builder.SetValidator(new NumberFormatValidator(format));
-        }
+            this IRuleBuilderOptions<T, TProperty> builder, string format) =>
+            builder.SetValidator(new NumberFormatValidator(format));
 
         public static IRuleBuilderOptions<T, TProperty> NumberFormat<T, TProperty>(
-            this IRuleBuilderInitial<T, TProperty> builder, string format)
-        {
-            return builder.SetValidator(new NumberFormatValidator(format));
-        }
+            this IRuleBuilderInitial<T, TProperty> builder, string format) =>
+            builder.SetValidator(new NumberFormatValidator(format));
 
-        public static IRuleBuilderOptions<TModel, TReturn> WithGuid<TModel, TReturn>(this IRuleBuilderOptions<TModel, TReturn> builder) where TModel : IHasGuid
-        {
-            return builder.WithState(x => x.Guid);
-        }
+        public static IRuleBuilderOptions<TModel, TReturn> WithGuid<TModel, TReturn>(this IRuleBuilderOptions<TModel, TReturn> builder) where TModel : IHasGuid =>
+            builder.WithState(x => x.Guid);
 
         /// <summary>
         /// Groups errors by their "CustomState" field then by the

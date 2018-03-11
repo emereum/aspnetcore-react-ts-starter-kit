@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -12,17 +12,14 @@ using TemplateProductName.Common;
 namespace TemplateProductName.Tests.Extensions
 {
     [ExcludeFromCodeCoverage]
-    static class TestExtensions
+    public static class TestExtensions
     {
         /// <summary>
         /// Gets a file relative to the output directory of INFORMd.Tests
         /// </summary>
         /// <param name="parts"></param>
         /// <returns></returns>
-        public static Stream GetTestFile(params string[] parts)
-        {
-            return File.OpenRead(GetTestFilePath(parts));
-        }
+        public static Stream GetTestFile(params string[] parts) => File.OpenRead(GetTestFilePath(parts));
 
         /// <summary>
         /// Gets a file path relative to the output directory of INFORMd.Tests
@@ -167,17 +164,36 @@ namespace TemplateProductName.Tests.Extensions
 
         public static object GetNonNullDummyValue(Type type)
         {
-            if (type == typeof(int)) return 42;
-            if (type == typeof(string)) return "DEADBEEF";
-            if (type == typeof(DateTime)) return new DateTime(2000, 01, 01);
+            if (type == typeof(int))
+            {
+                return 42;
+            }
+
+            if (type == typeof(string))
+            {
+                return "DEADBEEF";
+            }
+
+            if (type == typeof(DateTime))
+            {
+                return new DateTime(2000, 01, 01);
+            }
+
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
                 // If the property implements IEnumerable return an empty list.
-                return (IList)typeof(List<>)
+                var constructor = typeof(List<>)
                     .MakeGenericType(type.GetGenericArguments().Single())
-                    .GetConstructor(Type.EmptyTypes)
-                    .Invoke(null);
+                    .GetConstructor(Type.EmptyTypes);
+
+                if (constructor == null)
+                {
+                    throw new InvalidOperationException("Can't find a constructor");
+                }
+
+                return (IList)constructor.Invoke(null);
             }
+
             return Activator.CreateInstance(type);
         }
     }

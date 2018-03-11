@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data;
 
 namespace TemplateProductName.Persistence
 {
-    static class DataReaderExtensions
+    public static class DataReaderExtensions
     {
         public static IEnumerable<IDataRecord> AsEnumerable(this IDataReader reader)
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using TemplateProductName.Tests.Extensions;
 
 namespace TemplateProductName.Tests.Infrastructure.AutoTest.AutoTests
@@ -8,7 +8,7 @@ namespace TemplateProductName.Tests.Infrastructure.AutoTest.AutoTests
     /// Checks that a particular command property is required per the validation
     /// rules that run in the command handler.
     /// </summary>
-    class IsRequired : IAutoTest
+    public class IsRequired : IAutoTest
     {
         public bool CanTest(object testFixture, string testName, object[] args) =>
             testName.EndsWith("IsRequired") && testFixture is ICommandHandlerTest;
@@ -23,7 +23,10 @@ namespace TemplateProductName.Tests.Infrastructure.AutoTest.AutoTests
             // Get TestFixture.Command.{propName}
             var propName = testName.Substring(0, testName.Length - "IsRequired".Length);
             var propInfo = command.GetType().GetProperty(propName);
-            if (propInfo == null) throw new InvalidOperationException($"Couldn't find property {propName} on command {command.GetType().Name}");
+            if (propInfo == null)
+            {
+                throw new InvalidOperationException($"Couldn't find property {propName} on command {command.GetType().Name}");
+            }
 
             // Check null case
             Console.WriteLine($"Testing {command.GetType().Name}.{propName} = null (should fail validation)");

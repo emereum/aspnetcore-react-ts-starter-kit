@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TemplateProductName.WebApi.Extensions
@@ -11,9 +11,7 @@ namespace TemplateProductName.WebApi.Extensions
             return controller.Json(data);
         }
 
-        public static JsonResult JsonBadRequest(this Controller controller, object data)
-        {
-            return Json(controller, data, HttpStatusCode.BadRequest);
-        }
+        public static JsonResult JsonBadRequest(this Controller controller, object data) =>
+            Json(controller, data, HttpStatusCode.BadRequest);
     }
 }

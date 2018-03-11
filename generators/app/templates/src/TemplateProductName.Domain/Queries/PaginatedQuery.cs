@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Dynamic;
 using TemplateProductName.Domain.Repositories;
@@ -20,14 +20,14 @@ namespace TemplateProductName.Domain.Queries
     /// </summary>
     public abstract class PaginatedQuery<T> : IPaginationOptions, IGetQuery<T, PaginatedResult<T>> where T : class
     {
-        public int Page { get; set; } = DefaultPage;
-        public int PageSize { get; set; } = DefaultPageSize;
+        public int Page { get; set; } = defaultPage;
+        public int PageSize { get; set; } = defaultPageSize;
         public int Pages { get; set; }
         public string SortProperty { get; set; }
         public SortDirection SortDirection { get; set; }
 
-        private static readonly int DefaultPage = 1;
-        private static readonly int DefaultPageSize = 20;
+        private static readonly int defaultPage = 1;
+        private static readonly int defaultPageSize = 20;
 
         public PaginatedResult<T> Execute(IRepository repository, Type classType)
         {
@@ -40,25 +40,22 @@ namespace TemplateProductName.Domain.Queries
 
         public PaginatedResult<T> Reduce(IQueryable<T> entities)
         {
-            if (Page < 1) throw new InvalidOperationException("Page must be greater than zero.");
-            if (PageSize < 1) throw new InvalidOperationException("Page size must be greater than zero.");
-            if (string.IsNullOrWhiteSpace(SortProperty)) throw new InvalidOperationException("Sort property must be specified.");
+            if (Page < 1)
+            {
+                throw new InvalidOperationException("Page must be greater than zero.");
+            }
+
+            if (PageSize < 1)
+            {
+                throw new InvalidOperationException("Page size must be greater than zero.");
+            }
+
+            if (string.IsNullOrWhiteSpace(SortProperty))
+            {
+                throw new InvalidOperationException("Sort property must be specified.");
+            }
 
             var query = Filter(entities);
-
-            // todo: Reinstate NHibernate Futures for performance improvements.
-            // todo: Currently doing two separate queries for count and results.
-
-            // Get count of all entities in same query using NHibernate Future
-            // see http://ayende.com/blog/3979/nhibernate-futures
-            // This could just as easily be decomposed into 2 separate queries,
-            // we only use Futures to avoid two database query (performance improvement)
-            //var countQuery = query.ToFutureValue(x => x.Count());
-            //var entitiesQuery = query
-            //                .OrderBy(SortProperty + " " + SortDirection)
-            //                .Skip((Page - 1) * PageSize)
-            //                .Take(PageSize)
-            //                .ToFuture();
 
             var count = query.Count();
             var result = query
@@ -66,9 +63,6 @@ namespace TemplateProductName.Domain.Queries
                 .Skip((Page - 1) * PageSize)
                 .Take(PageSize)
                 .AsEnumerable();
-
-            //var count = countQuery.Value;
-            //var result = entitiesQuery.AsEnumerable();
 
             Pages = Math.Max(1, (int)Math.Ceiling(count / (double)PageSize));
 
@@ -80,9 +74,6 @@ namespace TemplateProductName.Domain.Queries
         /// this in a subclass to implement custom filtering. By default
         /// no additional filtering beyond the pagination will be performed.
         /// </summary>
-        protected virtual IQueryable<T> Filter(IQueryable<T> entities)
-        {
-            return entities;
-        }
+        protected virtual IQueryable<T> Filter(IQueryable<T> entities) => entities;
     }
 }

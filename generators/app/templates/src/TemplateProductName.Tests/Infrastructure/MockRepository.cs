@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ namespace TemplateProductName.Tests.Infrastructure
 {
     public class MockRepository : IRepository
     {
-        public IUnitOfWork UnitOfWork { get { throw new NotImplementedException(); } }
+        public IUnitOfWork UnitOfWork => throw new NotImplementedException();
 
         private readonly Dictionary<Type, ICollection> allEntities = new Dictionary<Type, ICollection>();
 
@@ -27,20 +27,11 @@ namespace TemplateProductName.Tests.Infrastructure
         }
 
 
-        public T Get<T>(object id) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        public T Get<T>(object id) where T : class => throw new NotImplementedException();
 
-        public T Get<T>(int? id) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        public T Get<T>(int? id) where T : class => throw new NotImplementedException();
 
-        public T Get<T>(object id, Type type) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        public T Get<T>(object id, Type type) where T : class => throw new NotImplementedException();
 
         public IEnumerable<T> List<T>() where T : class
         {
@@ -52,10 +43,7 @@ namespace TemplateProductName.Tests.Infrastructure
             return Enumerable.Empty<T>().AsQueryable();
         }
 
-        public IEnumerable<T> List<T>(Type type) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        public IEnumerable<T> List<T>(Type type) where T : class => throw new NotImplementedException();
 
         public IQueryable<T> Query<T>() where T : class
         {
@@ -67,19 +55,10 @@ namespace TemplateProductName.Tests.Infrastructure
             return Enumerable.Empty<T>().AsQueryable();
         }
 
-        public IQueryable<T> Query<T>(Type type) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<T> Query<T>(Type type) where T : class => throw new NotImplementedException();
 
-        public void Add<T>(T entity) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        public void Add<T>(T entity) where T : class => throw new NotImplementedException();
 
-        public void Remove<T>(T entity) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        public void Remove<T>(T entity) where T : class => throw new NotImplementedException();
     }
 }

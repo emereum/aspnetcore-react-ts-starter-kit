@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,8 +13,7 @@ namespace TemplateProductName.Persistence
         /// <summary>
         /// Adds pre-insert and pre-update hooks from the specified assembly.
         /// </summary>
-        public static void AddListenersFromAssembly(this Configuration configuration, Assembly assembly)
-        {
+        public static void AddListenersFromAssembly(this Configuration configuration, Assembly assembly) =>
             new Dictionary<Type, ListenerType>
             {
                 {typeof (IPreInsertEventListener), ListenerType.PreInsert},
@@ -32,6 +31,5 @@ namespace TemplateProductName.Persistence
                     configuration.AppendListeners(listener.Value, (object[])wrapper);
                 });
             });
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,13 +23,15 @@ namespace TemplateProductName.Tests.Infrastructure.AutoTest
             }
 
             var autoTest = autoTests.FirstOrDefault(x => x.CanTest(testFixture, testName, args));
-            if(autoTest == null) throw new InvalidOperationException("Could not find an auto test implementation to handle this test case.");
+            if (autoTest == null)
+            {
+                throw new InvalidOperationException("Could not find an auto test implementation to handle this test case.");
+            }
 
             autoTest.RunTest(testFixture, testName, args);
         }
 
-        private static void Initialise()
-        {
+        private static void Initialise() =>
             autoTests =
                 Assembly
                     .GetExecutingAssembly()
@@ -38,6 +40,5 @@ namespace TemplateProductName.Tests.Infrastructure.AutoTest
                     .Select(Activator.CreateInstance)
                     .Cast<IAutoTest>()
                     .ToList();
-        }
     }
 }
