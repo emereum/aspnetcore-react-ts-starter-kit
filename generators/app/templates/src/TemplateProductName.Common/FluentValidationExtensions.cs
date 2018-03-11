@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using FluentValidation;
@@ -8,16 +8,6 @@ namespace TemplateProductName.Common
 {
     public static class FluentValidationExtensions
     {
-        /// <summary>
-        /// Simplifies the creation of custom error messages. Allows calls like .WithMessage(x => $"The {x.Thing} value is invalid");
-        /// </summary>
-        public static IRuleBuilderOptions<TModel, TReturn> WithMessage<TModel, TReturn>(
-            this IRuleBuilderOptions<TModel, TReturn> builder,
-            Func<TModel, object> message)
-        {
-            return builder.WithMessage("{0}", message.Invoke);
-        }
-
         public static IRuleBuilderOptions<T, TProperty> NumberFormat<T, TProperty>(
             this IRuleBuilderOptions<T, TProperty> builder, string format)
         {

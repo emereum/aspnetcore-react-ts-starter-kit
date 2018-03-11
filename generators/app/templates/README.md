@@ -5,6 +5,7 @@ This is the repository for Template Product Name.
 ## Getting started
 
 * Install [Visual Studio 2017](https://www.visualstudio.com/downloads/)
+  * After installation, launch Visual Studio Installer, modify Visual Studio, and tick the .NET 4.7 and 4.7.1 SDK and targeting packs. This may not need to be done in future releases of Visual Studio.
 * Install [.NET Framework 4.6.2 Developer Pack](https://www.microsoft.com/en-us/download/details.aspx?id=53321)
 * Install [.NET Core SDK 2.0.0](https://download.microsoft.com/download/0/F/D/0FD852A4-7EA1-4E2A-983A-0484AC19B92C/dotnet-sdk-2.0.0-win-x64.exe)
 * Install [Node 7 or higher](https://nodejs.org/en/)
@@ -31,7 +32,7 @@ This repository contains several components:
 
 ### A web API consisting of:
 
-* An ASP.NET Core 2.0.0 application running on .NET Framework 4.6.2
+* An ASP.NET Core MVC 2.0.2 application running on .NET Framework 4.7.1
 * [AutoFac](https://autofac.org/)
 * [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
 * [FluentNHibernate](http://www.fluentnhibernate.org/)
