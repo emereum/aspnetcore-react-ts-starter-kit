@@ -6,8 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using NUnit.Framework;
 using TemplateProductName.Common;
+using Xunit;
 
 namespace TemplateProductName.Tests.Extensions
 {
@@ -47,7 +47,7 @@ namespace TemplateProductName.Tests.Extensions
                 .Select(x => $"\r\n{x.PropertyName}: {x.ErrorMessage}")
                 .Aggregate(", ");
 
-            Assert.IsFalse(allErrors.Any(), "Expected no error messages but got " + errorSummary);
+            Assert.False(allErrors.Any(), "Expected no error messages but got " + errorSummary);
         }
 
         public static void AssertNoValidationError(
@@ -57,7 +57,7 @@ namespace TemplateProductName.Tests.Extensions
         {
             var result = HasValidationError(errors, errorMessageStartsWith, propertyName);
 
-            Assert.IsFalse(result.Item1, $"Expected no error message like '{errorMessageStartsWith}' " +
+            Assert.False(result.Item1, $"Expected no error message like '{errorMessageStartsWith}' " +
                                          $"for property '{propertyName}' but got {result.Item2}");
         }
 
@@ -68,7 +68,7 @@ namespace TemplateProductName.Tests.Extensions
         {
             var result = HasValidationError(errors, errorMessageStartsWith, propertyName);
 
-            Assert.IsTrue(result.Item1, $"Expected error message like '{errorMessageStartsWith}' " +
+            Assert.True(result.Item1, $"Expected error message like '{errorMessageStartsWith}' " +
                                          $"for property '{propertyName}' but got {result.Item2}");
         }
 
@@ -79,7 +79,7 @@ namespace TemplateProductName.Tests.Extensions
         {
             var result = HasValidationErrorCode(errors, errorCode, propertyName);
 
-            Assert.IsFalse(result.Item1, $"Expected no error code like '{errorCode}' " +
+            Assert.False(result.Item1, $"Expected no error code like '{errorCode}' " +
                                          $"for property '{propertyName}' but got {result.Item2}");
         }
 
@@ -90,7 +90,7 @@ namespace TemplateProductName.Tests.Extensions
         {
             var result = HasValidationErrorCode(errors, errorCode, propertyName);
 
-            Assert.IsTrue(result.Item1, $"Expected error code like '{errorCode}' " +
+            Assert.True(result.Item1, $"Expected error code like '{errorCode}' " +
                                         $"for property '{propertyName}' but got {result.Item2}");
         }
 

@@ -1,10 +1,17 @@
-using NUnit.Framework;
+using Xunit;
 
 namespace TemplateProductName.Tests
 {
     public class ExampleTests
     {
-        [Test]
-        public void Example() => Assert.Pass();
+        [Fact]
+        public void OnePlusOneEqualsTwo()
+        {
+            const int one = 1;
+
+            var result = one + one;
+
+            Assert.Equal(2, result);
+        }
     }
 }

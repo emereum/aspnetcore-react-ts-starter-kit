@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using FluentValidation;
-using NUnit.Framework;
+using Xunit;
 using TemplateProductName.Common;
 
 namespace TemplateProductName.Tests.Infrastructure
@@ -35,7 +35,7 @@ namespace TemplateProductName.Tests.Infrastructure
             var errorMessageSummary = string.Join(", ",
                 errors.Select(x => "\r\n" + x.PropertyName + ": " + x.ErrorMessage));
 
-            Assert.IsTrue(result, $"Expected error message like '{errorMessageStartsWith}' " +
+            Assert.True(result, $"Expected error message like '{errorMessageStartsWith}' " +
                                   $"for property '{propertyName}' but got {errorMessageSummary}");
         }
 
@@ -63,7 +63,7 @@ namespace TemplateProductName.Tests.Infrastructure
             var errorMessageSummary = string.Join(", ",
                 errors.Select(x => "\r\n" + x.PropertyName + ": " + x.ErrorMessage));
 
-            Assert.IsFalse(result, $"Expected no error messages like '{errorMessageStartsWith}' " +
+            Assert.False(result, $"Expected no error messages like '{errorMessageStartsWith}' " +
                                   $"for property '{propertyName}' but got {errorMessageSummary}");
         }
 
@@ -81,7 +81,7 @@ namespace TemplateProductName.Tests.Infrastructure
             var errorMessageSummary = string.Join(", ",
                 errors.Select(x => "\r\n" + x.PropertyName + ": " + x.ErrorMessage));
 
-            Assert.IsFalse(result, $"Expected no error messages for property '{propertyName}' " +
+            Assert.False(result, $"Expected no error messages for property '{propertyName}' " +
                                    $"but got {errorMessageSummary}");
         }
     }

@@ -5,7 +5,9 @@ PROJECT_ROOT_DIR = File.dirname(__FILE__)
 SRC_DIR = File.join(PROJECT_ROOT_DIR, "src")
 SRC_WEB_DIR = File.join(SRC_DIR, "#{PROJECT_NAME}.WebApi")
 SRC_WEBCLIENT_DIR = File.join(SRC_DIR, "#{PROJECT_NAME}.WebClient")
+SRC_TESTS_DIR = File.join(SRC_DIR, "#{PROJECT_NAME}.Tests")
 PUBLISH_WEB_DIR = File.join(SRC_WEB_DIR, "bin", CONFIGURATION , "net462", "publish")
+TEST_RESULT_FILE = File.join(PROJECT_ROOT_DIR, "TestResult.xml");
 
 task :build => [:build_webapi_thunk, :build_webclient_thunk] # Testing is coupled to building of webclient so there is no separate test task for webclient.
 task :test => [:build, :test_webapi_thunk]
@@ -39,15 +41,13 @@ task :build_webclient_thunk do
     end
 end
 
-desc "Runs NUnit tests in #{PROJECT_NAME}.Tests and saves results in TestResult.xml.\r\n" +
-     "Requires NUnit."
+desc "Runs xUnit tests in #{PROJECT_NAME}.Tests and saves results in #{TEST_RESULT_FILE}."
 task :test_webapi_thunk do
-    # Run tests in #{PROJECT_NAME}.Tests
-    cmd = []
-    cmd << "nunit3-console"
-    cmd << "\"" + File.join(SRC_DIR, "#{PROJECT_NAME}.Tests", "bin", CONFIGURATION, "#{PROJECT_NAME}.Tests.dll") + "\""
-    cmd << "--result:TestResult.xml;format=nunit2"
-    sh cmd.join(" ")
+    Dir.chdir(SRC_TESTS_DIR) do
+        # This command hooks into the xunit.runner.visualstudio and XunitXml.TestLogger
+        # references in TemplateProductName.Tests to run and log test results with xUnit.
+        sh "dotnet test --test-adapter-path:. --logger:xunit;LogFilePath=#{TEST_RESULT_FILE}"
+    end
 end
 
 task :pack_webapi_thunk do |task, args| 
