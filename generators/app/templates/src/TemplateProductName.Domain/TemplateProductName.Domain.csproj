@@ -41,7 +41,7 @@
       <HintPath>..\packages\FluentNHibernate.2.1.0\lib\net461\FluentNHibernate.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
-      <HintPath>..\packages\FluentValidation.7.5.0\lib\net45\FluentValidation.dll</HintPath>
+      <HintPath>..\packages\FluentValidation.7.5.2\lib\net45\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.4.0.4\lib\net461\Iesi.Collections.dll</HintPath>
@@ -49,8 +49,8 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=5.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\NHibernate.5.0.3\lib\net461\NHibernate.dll</HintPath>
+    <Reference Include="NHibernate, Version=5.1.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.5.1.0\lib\net461\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="Remotion.Linq, Version=2.2.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
       <HintPath>..\packages\Remotion.Linq.2.2.0\lib\net45\Remotion.Linq.dll</HintPath>
@@ -67,10 +67,6 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -84,12 +80,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainModule.cs" />
+    <Compile Include="Features\CreateDinosaur\CreateDinosaurCommand.cs" />
+    <Compile Include="Features\CreateDinosaur\CreateDinosaurCommandHandler.cs" />
+    <Compile Include="Features\CreateDinosaur\CreateDinosaurValidator.cs" />
     <Compile Include="Features\ICommandHandler.cs" />
-    <Compile Include="Queries\IGetQuery.cs" />
-    <Compile Include="Queries\IPaginationOptions.cs" />
-    <Compile Include="Queries\PaginatedQuery.cs" />
-    <Compile Include="Queries\PaginatedResult.cs" />
-    <Compile Include="Queries\SortDirection.cs" />
+    <Compile Include="IMediator.cs" />
+    <Compile Include="Mediator.cs" />
+    <Compile Include="Queries\IQueryHandler.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -99,7 +96,12 @@
     <Content Include="Model\.gitkeep" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TemplateProductName.Common\TemplateProductName.Common.csproj">
+      <Project>{EFFB3B6E-9587-4D9F-90D6-59B064FCF534}</Project>
+      <Name>TemplateProductName.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

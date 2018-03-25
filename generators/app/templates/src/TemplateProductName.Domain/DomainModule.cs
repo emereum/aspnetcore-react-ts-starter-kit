@@ -30,15 +30,20 @@ namespace TemplateProductName.Domain
                 .AsSelf()
                 .InstancePerLifetimeScope();
 
-            // Queries
+            // Query Handlers
             builder.RegisterAssemblyTypes(executingAssembly)
-                .Where(t => t.Namespace != null && t.Namespace.Contains("Queries") && t.Name.EndsWith("Query"))
+                .Where(t => t.Namespace != null && t.Namespace.Contains("Queries") && t.Name.EndsWith("Handler"))
                 .AsSelf()
                 .InstancePerLifetimeScope();
 
             // Services
             builder.RegisterAssemblyTypes(executingAssembly)
                 .Where(t => t.Namespace != null && t.Namespace.Contains("Services") && t.Name.EndsWith("Service"))
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+
+            // Mediator
+            builder.RegisterType<Mediator>()
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
         }

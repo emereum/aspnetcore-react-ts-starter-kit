@@ -1,4 +1,4 @@
-namespace TemplateProductName.Domain.Queries
+namespace TemplateProductName.Common.Pagination
 {
     public enum SortDirection
     {

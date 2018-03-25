@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using FluentValidation;
 using FluentValidation.Results;
+using TemplateProductName.Common.Errors;
 
 namespace TemplateProductName.Common
 {
@@ -20,39 +21,42 @@ namespace TemplateProductName.Common
             builder.WithState(x => x.Guid);
 
         /// <summary>
-        /// Groups errors by their "CustomState" field then by the
-        /// "PropertyName" field. Validators should set each error state to
-        /// entity-under-validation's Guid and use this method to provide
-        /// grouped error sets back to a client. The client can then use the
-        /// Guids to map errors back to their corresponding entities when a
-        /// hierarchy of objects is being validated.
+        /// Returns a list of errors including the Guid of the model that caused
+        /// the error (which is retrieved from their CustomState field).
+        /// Validators should set each error state to entity-under-validation's 
+        /// Guid and use this method to provide error responses back to a
+        /// client. The client can then use the Guids to map errors back to
+        /// their corresponding entities when a hierarchy of objects is being
+        /// validated.
         /// </summary>
-        /// <param name="validationResult"></param>
-        /// <returns></returns>
-        public static Errors ToErrorDictionary(this ValidationResult validationResult)
+        public static IErrorResponse ToErrorResponse(this ValidationResult validationResult)
         {
-            var errorsByGuids = validationResult
-                .Errors
-                .GroupBy(x =>
-                {
-                    if (x.CustomState == null)
-                    {
-                        throw new InvalidOperationException(
-                            $"Validation rule for '{x.ErrorMessage}' must have" +
-                            ".WithGuid() to support ErrorDictionaries.");
-                    }
-                    return (Guid)x.CustomState;
-                });
-
-            var errors = new Errors();
-            foreach (var errorsByGuid in errorsByGuids)
+            if (validationResult.IsValid)
             {
-                var errorsByProperties = errorsByGuid
-                    .GroupBy(x => CanonicalizePropertyName(x.PropertyName))
-                    .ToDictionary(k => k.Key, v => v.ToList());
-                errors.Add(errorsByGuid.Key, errorsByProperties);
+                return null;
             }
-            return errors;
+
+            // Ensure all validation results are tied to their model guids
+            var badValidationResult = validationResult.Errors.FirstOrDefault(x => x.CustomState == null);
+
+            if (badValidationResult != null)
+            {
+                throw new InvalidOperationException(
+                    $"Validation rule for '{badValidationResult.ErrorMessage}' " +
+                    $"must have .WithGuid() to support IErrorResponse.");
+            }
+
+            var errors =
+                validationResult
+                .Errors
+                .Select(x => new ValidationError(
+                    (Guid)x.CustomState,
+                    CanonicalizePropertyName(x.PropertyName),
+                    x.ErrorCode,
+                    x.ErrorMessage
+                ));
+
+            return new ValidationErrors(errors);
         }
 
         /// <summary>

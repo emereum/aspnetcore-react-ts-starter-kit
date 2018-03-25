@@ -1,8 +1,9 @@
 import Bind from "./Bind";
+import ValidationErrors from "./ValidationErrors";
 
 interface IBindConfigOptions {
     context: any;
-    errors?: IErrors;
+    errors?: ValidationErrors;
 }
 
 /**
@@ -11,7 +12,7 @@ interface IBindConfigOptions {
  * them for every binding used in a component.
  */
 function BindConfig(options: IBindConfigOptions) {
-    return (property: string, onChange?: (e: any, data: any) => void, errorProperty?: string) =>
+    return (property: string, onChange?: (e: React.SyntheticEvent<any>, data?: { value: any }) => void, errorProperty?: string) =>
         Bind(options.context, property, onChange, options.errors, errorProperty);
 }
 

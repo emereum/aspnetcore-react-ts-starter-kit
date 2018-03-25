@@ -1,6 +1,7 @@
 # TemplateProductName Server Configuration Script
 # This script configures a Windows Server from a blank slate to a point where
-# TemplateProductName can be deployed and run on it over ssh.
+# TemplateProductName can be deployed and run on it over ssh. It installs
+# IIS, dotnet core windows hosting, OpenSSH server, and sets up a private key.
 
 # Manual tasks
     # * Create a D partition

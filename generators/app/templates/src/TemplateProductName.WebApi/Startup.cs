@@ -44,6 +44,10 @@ namespace TemplateProductName.WebApi
                     // Do not cache mvc responses in IE
                     options.Filters.Add(new ResponseCacheFilter(new CacheProfile { NoStore = true, Location = ResponseCacheLocation.None }));
 
+                    // Automatically set Http status codes depending on the type
+                    // of action result returned from a controller action.
+                    options.Filters.Add(new HttpStatusCodeConventionFilter());
+
                     // Populate controller action parameters from the JSON body
                     // by default. Equivalent to adding [FromBody] to every
                     // complex type parameter.
@@ -103,9 +107,6 @@ namespace TemplateProductName.WebApi
         {
             if (env.IsDevelopment())
             {
-                // Add hooks for NHibernate Profiler
-                HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
-
                 loggerFactory.AddConsole(Configuration.GetSection("Logging"));
                 loggerFactory.AddDebug();
 

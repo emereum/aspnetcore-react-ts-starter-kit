@@ -4,7 +4,11 @@ body {
   font-family: sans-serif;
 }
 
-.content {
-  margin-top:50px;
-  padding:20px;
+.property-errors-wrapper {
+  display: inline;
+}
+
+.property-errors-wrapper input {
+  /* Customise me */
+  background-color: red;
 }

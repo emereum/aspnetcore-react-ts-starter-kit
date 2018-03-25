@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using TemplateProductName.Common;
+using TemplateProductName.Common.Errors;
 using Xunit;
 
 namespace TemplateProductName.Tests.Extensions
@@ -36,22 +37,17 @@ namespace TemplateProductName.Tests.Extensions
             return file;
         }
 
-        public static void AssertNoValidationErrors(Errors errors)
+        public static void AssertNoValidationErrors(ValidationErrors errors)
         {
-            var allErrors = errors
-                .SelectMany(x => x.Value)
-                .SelectMany(x => x.Value)
-                .ToList();
-
-            var errorSummary = allErrors
-                .Select(x => $"\r\n{x.PropertyName}: {x.ErrorMessage}")
+            var errorSummary = errors
+                .Select(x => $"\r\n{x.Property}: {x.Message}")
                 .Aggregate(", ");
 
-            Assert.False(allErrors.Any(), "Expected no error messages but got " + errorSummary);
+            Assert.False(errors.Any(), "Expected no error messages but got " + errorSummary);
         }
 
         public static void AssertNoValidationError(
-            Errors errors,
+            ValidationErrors errors,
             string errorMessageStartsWith,
             string propertyName)
         {
@@ -62,7 +58,7 @@ namespace TemplateProductName.Tests.Extensions
         }
 
         public static void AssertHasValidationError(
-            Errors errors,
+            ValidationErrors errors,
             string errorMessageStartsWith,
             string propertyName)
         {
@@ -73,7 +69,7 @@ namespace TemplateProductName.Tests.Extensions
         }
 
         public static void AssertNoValidationErrorCode(
-            Errors errors,
+            ValidationErrors errors,
             string errorCode,
             string propertyName)
         {
@@ -84,7 +80,7 @@ namespace TemplateProductName.Tests.Extensions
         }
 
         public static void AssertHasValidationErrorCode(
-            Errors errors,
+            ValidationErrors errors,
             string errorCode,
             string propertyName)
         {
@@ -95,51 +91,41 @@ namespace TemplateProductName.Tests.Extensions
         }
 
         private static Tuple<bool, string> HasValidationError(
-            Errors errors,
+            ValidationErrors errors,
             string errorMessageStartsWith,
             string propertyName)
         {
-            var allErrors = errors
-                .SelectMany(x => x.Value)
-                .SelectMany(x => x.Value)
-                .ToList();
-
-            var hasError = allErrors
+            var hasError = errors
                 .Any(x =>
-                    x.ErrorMessage.StartsWith(errorMessageStartsWith) &&
-                    x.PropertyName == propertyName);
+                    x.Message.StartsWith(errorMessageStartsWith) &&
+                    x.Property == propertyName);
 
-            var errorSummary = allErrors
-                .Select(x => $"\r\n{x.PropertyName}: {x.ErrorMessage}")
+            var errorSummary = errors
+                .Select(x => $"\r\n{x.Property}: {x.Message}")
                 .Aggregate(", ");
 
             return Tuple.Create(hasError, errorSummary);
         }
 
         private static Tuple<bool, string> HasValidationErrorCode(
-            Errors errors,
+            ValidationErrors errors,
             string errorCode,
             string propertyName)
         {
-            var allErrors = errors
-                .SelectMany(x => x.Value)
-                .SelectMany(x => x.Value)
-                .ToList();
-
-            var hasError = allErrors
+            var hasError = errors
                 .Any(x =>
-                    x.ErrorCode.Equals(errorCode) &&
-                    x.PropertyName == propertyName);
+                    x.Code.Equals(errorCode) &&
+                    x.Property == propertyName);
 
-            var errorSummary = allErrors
-                .Select(x => $"\r\n{x.PropertyName}: {x.ErrorCode}")
+            var errorSummary = errors
+                .Select(x => $"\r\n{x.Property}: {x.Code}")
                 .Aggregate(", ");
 
             return Tuple.Create(hasError, errorSummary);
         }
 
         public static void IsRequired<TEntity, TProperty>(
-            Func<Errors> getErrors,
+            Func<ValidationErrors> getErrors,
             TEntity entity,
             Expression<Func<TEntity, TProperty>> prop)
         {

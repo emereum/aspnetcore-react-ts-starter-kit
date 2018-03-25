@@ -4,14 +4,10 @@ This is the repository for Template Product Name.
 
 ## Getting started
 
-* Install [Visual Studio 2017](https://www.visualstudio.com/downloads/)
-  * After installation, launch Visual Studio Installer, modify Visual Studio, and tick the .NET 4.7 and 4.7.1 SDK and targeting packs. This may not need to be done in future releases of Visual Studio.
-* Install [.NET Framework 4.6.2 Developer Pack](https://www.microsoft.com/en-us/download/details.aspx?id=53321)
-* Install [.NET Core SDK 2.0.0](https://download.microsoft.com/download/0/F/D/0FD852A4-7EA1-4E2A-983A-0484AC19B92C/dotnet-sdk-2.0.0-win-x64.exe)
-* Install [Node 7 or higher](https://nodejs.org/en/)
-* Install [PostgreSQL 9.5 or higher](https://www.postgresql.org/download/windows/)
+* Run `environments\setup-dev-environment.ps1` from an elevated PowerShell shell. This script will install several IDEs. Please read it before running it.
+* Install [PostgreSQL](https://www.postgresql.org/download/windows/)
 * Put your PostgreSQL bin directory on the PATH so psql.exe can be executed on the command line
-* Run `database\setup.ps1` (This will create a PostgreSQL database on localhost with database name, username and password set to "templateproductname")
+* Run `database\setup.ps1`. This script will create a PostgreSQL database on localhost with database name, username and password set to "templateproductname".
 * Launch `src\TemplateProductName.sln` with Visual Studio
 * If you are using a database with different connection details than what are created in the database setup script, create `appsettings.local.json` in `TemplateProductName.WebApi` and enter a connection string per `appsettings.json`. Do not edit `appsettings.json`.
 * Run the `TemplateProductName.WebApi` project
@@ -22,9 +18,13 @@ This is the repository for Template Product Name.
 * Open `src\TemplateProductName.WebClient` with Visual Studio Code
 * Click the TypeScript version at the bottom-right corner of VS Code and choose "Use workspace version"
 
+## Build and continuous integration server setup
+
+Run `environments\setup-build-environment.ps1` to prepare a server for building Template Product Name from the command line.
+
 ## Test and production web server setup
 
-Run `server\install-iis-aspnetcore-ssh.ps1` to prepare a server for automated deployments and for running ASP.NET Core applications. This will install IIS, remove the default website and application pool, install the ASP.NET Core windows hosting bundle, set up OpenSSH with public key authentication and create a public and private key. The script can be used to prepare test, staging, or production servers. More information can be found within the script.
+Run `environments\setup-hosting-environment.ps1` to prepare a server for automated deployments and for running ASP.NET Core applications. This will install IIS, remove the default website and application pool, install the ASP.NET Core windows hosting bundle, set up OpenSSH with public key authentication and create a public and private key. The script can be used to prepare test, staging, or production servers. More information can be found within the script.
 
 ## What's included
 
@@ -36,10 +36,9 @@ This repository contains several components:
 * [AutoFac](https://autofac.org/)
 * [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
 * [FluentNHibernate](http://www.fluentnhibernate.org/)
-* [NHibernate](http://nhibernate.info/)
-* A PostgreSQL database session factory for NHibernate (An Oracle one is included too)
+* [NHibernate](http://nhibernate.info/) + integration with PostgreSQL
 * [NSubstitute](http://nsubstitute.github.io/)
-* [NUnit](https://www.nunit.org/)
+* [xUnit](https://xunit.github.io/)
 
 ### A SPA web client consisting of:
 
@@ -60,13 +59,14 @@ This repository contains several components:
 +----------------------------------------+-----------------------------------------------------------------+
 | database\setup.ps1                     | Initialise a PostgreSQL database on localhost.                  |
 +----------------------------------------+-----------------------------------------------------------------+
-| server\install-iis-aspnetcore-sshd.ps1 | Configure a clean Windows Server to support automated           |
-|                                        | deployments and hosting of the product.                         |
+| environments\setup-*-environment.ps1   | Pave various environments (dev, build, and hosting environments)|
+|                                        | so the environments are ready for the product to be developed,  |
+|                                        | built, or hosted.                                               |
 +----------------------------------------+-----------------------------------------------------------------+
 | deploy\templateproductname.nuspec      | Pack the product into a Chocolatey package which can be used to |
-|                                        | to deploy the application to a server. This script is invoked   |
-|                                        | and the resulting package is deployed by rakefile.rb to the     |
-|                                        | target server.                                                  |
+|                                        | to deploy the product to a server. This script is invoked and   |
+|                                        | the resulting package is deployed by rakefile.rb to the target  |
+|                                        | server.                                                         |
 +----------------------------------------+-----------------------------------------------------------------+
 | deploy\tools\chocolateyinstall.ps1     | Perform deployment tasks on the server to which the product     |
 |                                        | is being deployed. This includes things like destroying and     |
@@ -157,7 +157,3 @@ public class UserController: Controller
 
 `TemplateProductName.Domain.Model`
   * This should contain a DDD-style domain model of the business problems being solved by TemplateProductName.
-
-## Other development tips
-
-* When working on TemplateProductName.WebClient remember to `npm shrinkwrap` and commit the shrinkwrap file to keep the version numbers of all dependencies stable.

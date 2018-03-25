@@ -1,4 +1,5 @@
-import * as R from "ramda";
+import { action } from "mobx";
+import ValidationErrors from "./ValidationErrors";
 
 /**
  * Provides data-binding like functionality to any component which implements
@@ -6,42 +7,41 @@ import * as R from "ramda";
  * 
  * <SomeInput {...Bind(person, "name")} />
  * 
+ * See: https://blog.mariusschulz.com/2017/01/06/typescript-2-1-keyof-and-lookup-types
+ * 
  * @param context The object whose property should be shown.
  * @param property The property of the object to show.
  */
-function Bind(
-    context: any,
-    property: string,
-    onChange?: (e: any, data: any) => void,
-    errors?: IErrors,
+function Bind<TContext, TProp extends keyof TContext>(
+    context: TContext,
+    property: TProp,
+    onChange?: (e: React.SyntheticEvent<any>, data?: { value: any }) => void,
+    errors?: ValidationErrors,
     errorProperty?: string) {
     if(!(property in context)) {
         throw "Bound property does not exist: " + property;
     }
-
-    // If the context has a guid and we have a dictionary of
-    // guids -> properties -> errors then check whether this property is in error
-    // and provide that information to the bound component.
-    //
-    // Consumers can default to checking the bound property name or override
-    // and use a different name for error checking. This is useful when the model
-    // submitted to the API doesn't exactly match the model being presented (e.g.
-    // a property might be called "thing" in a component but submitted to the API
-    // as "thingCode", in such cases the errorProperty should be set to "thingCode").
-    const checkErrorProperty = (errorProperty != null ? errorProperty : property).toLowerCase();
-    const hasErrors =
-        context.guid != null &&
-        R.path([context.guid, checkErrorProperty], errors) != null;
-
     return {
         value: context[property],
-        onChange: (e: any, data: any) =>  {
-            context[property] = data.value;
-            if(onChange != null) {
-                onChange(e, data);
+        onChange: action((...args: any[]) =>  {
+            if(args.length === 1) {           
+                // We're bound to a standard react component
+                context[property] = (<React.ChangeEvent<any>>args[0]).target.value;
+            } else if(args.length === 2) {
+                // We're bound to a semantic-ui component
+                context[property] = args[1].value;
+            } else {
+                throw "Unexpected number of arguments to onChange callback. " +
+                      "Did you bind to something other than a React input or " +
+                      "semantic-ui component?";
             }
-        },
-        error: hasErrors
+
+            if(onChange != null) {
+                onChange.apply(null, args);
+            }
+        }),
+        errors: errors,
+        errorProperty: errorProperty || errors
     };
 }
 

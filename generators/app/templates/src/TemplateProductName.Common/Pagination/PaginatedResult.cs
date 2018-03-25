@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TemplateProductName.Domain.Queries
+namespace TemplateProductName.Common.Pagination
 {
     public class PaginatedResult<TEntity>
     {
