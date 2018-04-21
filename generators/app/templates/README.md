@@ -82,60 +82,53 @@ Controller actions should accept `Command` classes which are simple POCOs with n
 ```
 public class CreateUserCommand
 {
+    public Guid Id { get; set; }
     public string UserName { get; set; }
 }
 ```
 
-Commands should be executed by a `CommandHandler`:
+Commands should be executed by a `CommandHandler`. Generally a `CommandHandler` should return nothing if the command was handled successfully, or an IErrorResponse if the command was invalid. Don't assume what the consumer wants to see in response to a command, let the consumer query for that information separately. This makes for more reusable Apis:
 
 ```
-public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Maybe<Error>>
+public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
 {
+    private readonly CreateUserValidator validator;
     private readonly IRepository repository;
     
-    public CreateUserCommandHandler(IRepository repository)
+    public CreateUserCommandHandler(CreateUserValidator validator, IRepository repository)
     {
+        this.validator = validator;
         this.repository = repository;
     }
     
-    public Maybe<Error> Handle(CreateUserCommand command)
+    public IErrorResponse Handle(CreateUserCommand command)
     {
-        if( /* username is taken */ )
+        var errors = validator.Validate(command);
+        
+        if (!errors.IsValid)
         {
-            return Some(new Error("Username is taken"));
+            return errors.ToErrorResponse();
         }
         
-        // If the validation is complex, implement a validator
-        // using FluentValidation by creating a new class and
-        // inheriting from AbstractValidator<CreateUserCommandHandler>
-        
-        repository.Add(new User { UserName = command.UserName });
-        return None();
+        repository.Add(new User { Id = command.Id, UserName = command.UserName });
+        return null;
     }
 }
 ```
 
-Controllers should be thin; they only delegate `Commands` to `CommandHandlers`, set HTTP Response codes, and return some JSON data if necessary:
+Controllers should be thin; they only delegate `Commands` to `CommandHandlers` via an `IMediator`:
 
 ```
 [Route("api/[controller]")]
 public class UserController: Controller
 {
-    private readonly CreateUserCommandHandler createUserCommandHandler;
+    private readonly IMediator mediator
     
-    public UserController(CreateUserCommandHandler createUserCommandHandler)
-    {
-        this.createUserCommandHandler = createUserCommandHandler;
-    }
+    public UserController(IMediator mediator) => this.mediator = mediator;
     
     [HttpPost]
-    public ActionResult Post([FromBody] CreateUserCommand command) =>
-        createUserCommandHandler
-        .Handle(command)
-        .Match(
-            some => this.JsonBadRequest(some),
-            none => HttpOk()
-        );
+    public IErrorResponse Post(CreateUserCommand command) =>
+        mediator.Send<CreateUserCommandHandler>(command);
 }
 ```
 
