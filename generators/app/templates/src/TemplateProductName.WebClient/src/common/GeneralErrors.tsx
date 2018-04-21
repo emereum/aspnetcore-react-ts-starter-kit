@@ -34,7 +34,7 @@ export default class GeneralErrors extends React.PureComponent<IGeneralErrorsPro
             return null;
         }
 
-        var filteredErrors = errors.filter(x => (guid == null || x.guid === guid) && x.property == null);
+        const filteredErrors = errors.filter(x => (guid == null || x.guid === guid) && x.property == null);
         
         if(!filteredErrors.length) {
             return null;

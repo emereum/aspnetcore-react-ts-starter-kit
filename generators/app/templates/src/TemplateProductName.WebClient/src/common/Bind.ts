@@ -19,28 +19,29 @@ function Bind<TContext, TProp extends keyof TContext>(
     errors?: ValidationErrors,
     errorProperty?: string) {
     if(!(property in context)) {
-        throw "Bound property does not exist: " + property;
+        throw new Error("Bound property does not exist: " + property);
     }
     return {
         value: context[property],
         onChange: action((...args: any[]) =>  {
             if(args.length === 1) {           
                 // We're bound to a standard react component
-                context[property] = (<React.ChangeEvent<any>>args[0]).target.value;
+                context[property] = (args[0] as React.ChangeEvent<any>).target.value;
             } else if(args.length === 2) {
                 // We're bound to a semantic-ui component
                 context[property] = args[1].value;
             } else {
-                throw "Unexpected number of arguments to onChange callback. " +
+                throw new Error(
+                      "Unexpected number of arguments to onChange callback. " +
                       "Did you bind to something other than a React input or " +
-                      "semantic-ui component?";
+                      "semantic-ui component?");
             }
 
             if(onChange != null) {
                 onChange.apply(null, args);
             }
         }),
-        errors: errors,
+        errors,
         errorProperty: errorProperty || errors
     };
 }

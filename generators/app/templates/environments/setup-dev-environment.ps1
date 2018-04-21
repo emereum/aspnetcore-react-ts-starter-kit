@@ -15,4 +15,4 @@ cinst flyway.commandline --version 4.2.0 -y
 # vscode's own version. To do this manually, open vscode and click the
 # TypeScript version at the bottom right, then choose "Use workspace version".
 mkdir ..\src\TemplateProductName.WebClient\.vscode
-echo "{ ""typescript.tsdk"": ""node_modules\\typescript\\lib"" }" > ..\src\TemplateProductName.WebClient\.vscode\settings.json
+cp resources\settings.json ..\src\TemplateProductName.WebClient\.vscode\settings.json

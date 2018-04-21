@@ -1,4 +1,4 @@
-import { observable, action, computed } from "mobx";
+import { action, computed, observable } from "mobx";
 
 type LoadStatus = "initial" | "loading" | "loaded" | "networkError";
 
@@ -14,9 +14,9 @@ type LoadStatus = "initial" | "loading" | "loaded" | "networkError";
 export default class Loadable<TResponse> {
     @observable status: LoadStatus = "initial";
     @observable data?: TResponse;
-    @computed get isLoading() { return status === "loading"; }
-    @computed get isLoaded() { return status === "loaded"; }
-    @computed get hasNetworkError() { return status === "networkError"; }
+    @computed get isLoading() { return this.status === "loading"; }
+    @computed get isLoaded() { return this.status === "loaded"; }
+    @computed get hasNetworkError() { return this.status === "networkError"; }
 
     loading = action(() => {
         this.status = "loading";

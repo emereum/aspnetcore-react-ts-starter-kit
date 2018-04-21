@@ -22,7 +22,7 @@ export default class PropertyErrors extends React.Component<IPropertyErrorsProps
         const { errors, errorProperty, guid, children } = this.props;
 
         const errorPropertyLower = errorProperty.toLowerCase();
-        var filteredErrors = (errors || []).filter(x => x.guid === guid && x.property === errorPropertyLower);
+        const filteredErrors = (errors || []).filter(x => x.guid === guid && x.property === errorPropertyLower);
 
         if(!filteredErrors.length) {
             return children;

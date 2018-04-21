@@ -1,20 +1,15 @@
 
 import * as moment from "moment";
-import * as ApiConstants from "./ApiConstants";
-import Loadable from "./Loadable";
 import ValidationErrors from "../common/ValidationErrors";
+import * as ApiConstants from "./ApiConstants";
+import ApiResponse from "./ApiResponse";
+import Loadable from "./Loadable";
+import * as Toasts from "../common/Toasts";
 
 const defaultFetchOptions: RequestInit = {
     credentials: "include", // Allow cookies to be sent and received cross-origin
     headers: { "X-Requested-With": "XMLHttpRequest" } // So we can distinguish fetch requests on the backend
 };
-
-class ApiResponse<TResponse> extends Response {
-    /**
-     * Deserialised json response data (or undefined)
-     */
-    data?: TResponse;
-}
 
 /**
  * Provides methods to execute commands or queries against the Api. Assumes
@@ -28,7 +23,7 @@ class Api {
      * that changes the state of the backend. It should only be used for
      * retrieving information. 
      */
-    get<TQuery extends Object, TResponse>(url: string, data?: TQuery, loadable?: Loadable<TResponse>) {
+    get<TQuery extends object, TResponse>(url: string, data?: TQuery, loadable?: Loadable<TResponse>) {
         if(loadable != null) {
             loadable.loading();
         }
@@ -38,33 +33,33 @@ class Api {
             url += "?" + this.parameterize(data);
         }
 
-        const promise =
-            // Invoke the http request
-            fetch(ApiConstants.baseUrl + url, defaultFetchOptions)
+        // Invoke the http request
+        return fetch(ApiConstants.baseUrl + url, defaultFetchOptions)
 
             // Attempt to parse the JSON response if it's a JSON response
             .then(this.maybeParseJson)
 
             // Help the type system a bit...
-            .then(x => <ApiResponse<TResponse>>x)
+            .then(x => x as ApiResponse<TResponse>)
 
             // Update the loadable status (if we loaded the data)
             .then((x: ApiResponse<TResponse>) => {
+
                 if(loadable != null) {
                     loadable.loaded(x.data);
                 }
                 return x;
-            });
+            })
 
-            // Update the loadable status (if we had a network error)
-        promise.catch((reason: any) => {
-            if(loadable != null) {
-                loadable.networkError();
-            }
-            return reason;
-        });
-        
-        return promise;
+            // Make a network error toast and update the loadable status (if we had
+            // a network error)
+            .catch((reason: any) => {
+                Toasts.networkError();            
+                if(loadable != null) {
+                    loadable.networkError();
+                }
+                return reason;
+            });
     }
 
     /**
@@ -85,9 +80,8 @@ class Api {
             loadable.loading();
         }
 
-        const promise =
-            // Invoke the http request
-            fetch(ApiConstants.baseUrl + url, {
+        // Invoke the http request
+        return fetch(ApiConstants.baseUrl + url, {
                 ...defaultFetchOptions,
                 method: "post",
                 headers: {
@@ -101,7 +95,7 @@ class Api {
             .then(x => this.maybeParseJson(x))
 
             // Help the type system a bit...
-            .then(x => <ApiResponse<TResponse>>x)
+            .then(x => x as ApiResponse<TResponse>)
 
             // Update the loadable status (if we loaded the data)
             .then((x: ApiResponse<TResponse>) => {
@@ -109,16 +103,17 @@ class Api {
                     loadable.loaded(x.data);
                 }
                 return x;
+            })
+
+            // Make a network error toast and update the loadable status (if we
+            // had a network error)
+            .catch((reason: any) => {
+                Toasts.networkError();
+                if(loadable != null) {
+                    loadable.networkError();
+                }
+                throw reason;
             });
-
-        // Update the loadable status (if we had a network error)
-        promise.catch((reason: any) => {
-            if(loadable != null) {
-                loadable.networkError();
-            }
-        });
-
-        return promise;
     }
 
     /**
@@ -135,7 +130,7 @@ class Api {
         return response
             .json()
             .then(data => {
-                (<any>response).data = data;
+                (response as any).data = data;
                 return response;
             });
     }

@@ -1,17 +1,17 @@
-import * as React from "react";
 import { observer } from "mobx-react";
-import BindConfig from "../../common/BindConfig";
-import CreateDinosaurStore from "./CreateDinosaurStore";
+import * as React from "react";
 import { Button } from "semantic-ui-react";
+import BindConfig from "../../common/BindConfig";
 import GeneralErrors from "../../common/GeneralErrors";
 import PropertyErrors from "../../common/PropertyErrors";
+import CreateDinosaurStore from "./CreateDinosaurStore";
 
 @observer
 export default class CreateDinosaurComponent extends React.Component<{}, {}> {
     render() {
         const { dinosaur, createDinosaur, createDinosaurResult } = CreateDinosaurStore;
 
-        var bind = BindConfig({
+        const bind = BindConfig({
             context: dinosaur
         });
 
@@ -22,7 +22,7 @@ export default class CreateDinosaurComponent extends React.Component<{}, {}> {
 
                 <label>Name:</label>
                 <PropertyErrors errors={createDinosaurResult.data} guid={dinosaur.guid} errorProperty="name">
-                    <input type="text" {...bind("name")} />
+                    <input type="text" {...bind("name")} disabled={createDinosaurResult.isLoading} />
                 </PropertyErrors>
                 <Button
                     type="submit"
