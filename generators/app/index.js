@@ -41,6 +41,9 @@ module.exports = class extends Generator {
             
             // kebab-case
             function(x) { return x.replace(/ /g, "-").replace(/[^-a-zA-Z0-9]/, "").toLowerCase(); }
+            
+            // snake_case
+            function(x) { return x.replace(/ /g, "_").replace(/[^-a-zA-Z0-9]/, "").toLowerCase(); }
         ];
     }
     
