@@ -1,3 +1,5 @@
+#Requires -RunAsAdministrator
+
 # TemplateProductName Server Configuration Script
 # This script configures a Windows Server from a blank slate to a point where
 # TemplateProductName can be deployed and run on it over ssh. It installs
