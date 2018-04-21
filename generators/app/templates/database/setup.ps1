@@ -2,7 +2,7 @@ Write-Host @'
 
  Welcome to the Template Product Name database setup tool
 
- I am about to create and populate a templateproductname_dev database in your
+ I am about to create and populate a template_product_name database in your
  PostgreSQL database. Please ensure PostgreSQL is installed and that
  you have your postgres DBA account password ready. I need to initially
  log in to a maintenance database (typically postgres) but I will create

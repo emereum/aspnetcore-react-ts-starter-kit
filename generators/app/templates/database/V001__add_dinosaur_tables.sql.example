@@ -1,12 +1,11 @@
 create table template_product_name.dinosaurs
 (
-    id serial not null
-        constraint attributes_pkey
+    id uuid not null
+        constraint dinosaurs_pkey
             primary key,
-    code text not null
-        constraint attributes_code_key
-            unique,
     name text not null
+        constraint dinosaurs_name_key
+            unique
 );
 
 do $$
