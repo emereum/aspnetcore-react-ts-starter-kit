@@ -28,8 +28,6 @@ export default class PropertyErrors extends React.Component<IPropertyErrorsProps
             return children;
         }
 
-        console.log(filteredErrors);
-
         return (
             <Popup
                 trigger={<div className="property-errors-wrapper">{children}</div>}
