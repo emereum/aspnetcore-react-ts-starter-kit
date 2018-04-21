@@ -7,7 +7,5 @@ namespace TemplateProductName.Common.Pagination
         public int? Pages { get; set; }
         public string SortProperty { get; set; }
         public SortDirection? SortDirection { get; set; }
-
-        internal PaginationOptions() { }
     }
 }
