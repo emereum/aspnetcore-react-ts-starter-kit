@@ -4,9 +4,7 @@ This is the repository for Template Product Name.
 
 ## Getting started
 
-* Run `environments\setup-dev-environment.ps1` from an elevated PowerShell shell. This script will install several IDEs. Please read it before running it.
-* Install [PostgreSQL](https://www.postgresql.org/download/windows/)
-* Put your PostgreSQL bin directory on the PATH so psql.exe can be executed on the command line
+* Run `environments\setup-dev-environment.ps1` from an elevated PowerShell shell. This script will install several IDEs, some command line tools, and PostgreSQL. Please read it before running it.
 * Run `database\setup.ps1`. This script will create a PostgreSQL database on localhost with database name, username and password set to `template_product_name`.
 * Launch `src\TemplateProductName.sln` with Visual Studio
 * Run the `TemplateProductName.WebApi` project
