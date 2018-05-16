@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using System.Linq.Dynamic;
+using System.Linq.Dynamic.Core;
 
 namespace TemplateProductName.Common.Pagination
 {
@@ -43,7 +43,7 @@ namespace TemplateProductName.Common.Pagination
                 .OrderBy(options.SortProperty + " " + options.SortDirection)
                 .Skip((options.Page.Value - 1) * options.PageSize.Value)
                 .Take(options.PageSize.Value)
-                .AsEnumerable();
+                .ToList();
             var pages = Math.Max(1, (int)Math.Ceiling(totalCount/ (double)options.PageSize.Value));
 
             return new PaginatedResult<T>(results, new PaginationOptions

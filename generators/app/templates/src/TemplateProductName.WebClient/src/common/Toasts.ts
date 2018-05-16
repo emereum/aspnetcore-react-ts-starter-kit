@@ -1,5 +1,4 @@
-import { toast } from "react-toastify";
-import { style } from "react-toastify";
+import { toast, style } from "react-toastify";
 
 style({ width: "600px" });
 
@@ -13,7 +12,7 @@ const deduplicate = (makeToast: () => number) => {
     if(toastId == null || !toast.isActive(toastId)) {
       toastId = makeToast();
     }
-  }
-}
+  };
+};
 
 export const networkError = deduplicate(() => toast.warn("A network error occurred. Please wait a few moments then try again."));

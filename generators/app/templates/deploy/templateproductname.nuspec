@@ -12,7 +12,7 @@
   <files>
     <file src="serversettings.json" target="serversettings.json" />
     <file src="tools\**" target="tools" />
-    <file src="..\src\TemplateProductName.WebApi\bin\Release\net462\publish\" target="TemplateProductName.WebApi" />
+    <file src="..\src\TemplateProductName.WebApi\bin\Release\netcoreapp2.0\publish\" target="TemplateProductName.WebApi" />
     <file src="..\database\" target="database" />
   </files>
 </package>

@@ -117,7 +117,9 @@ namespace TemplateProductName.WebApi
             }
             else
             {
-                loggerFactory.AddEventLog();
+                // todo: loggerFactory.AddEventLog();
+                // Temporarily just log to console in release mode.
+                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             }
 
             app.UseMvc();

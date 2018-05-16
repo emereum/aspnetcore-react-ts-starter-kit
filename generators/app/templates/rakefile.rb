@@ -8,7 +8,7 @@ SRC_DIR = File.join(PROJECT_ROOT_DIR, "src")
 SRC_WEB_DIR = File.join(SRC_DIR, "#{PROJECT_NAME}.WebApi")
 SRC_WEBCLIENT_DIR = File.join(SRC_DIR, "#{PROJECT_NAME}.WebClient")
 SRC_TESTS_DIR = File.join(SRC_DIR, "#{PROJECT_NAME}.Tests")
-PUBLISH_WEB_DIR = File.join(SRC_WEB_DIR, "bin", CONFIGURATION , "net471", "publish")
+PUBLISH_WEB_DIR = File.join(SRC_WEB_DIR, "bin", CONFIGURATION , "netcoreapp2.0", "publish")
 TEST_RESULT_FILE = File.join(PROJECT_ROOT_DIR, "TestResult.xml");
 
 desc "Build #{PROJECT_NAME}.WebApi and #{PROJECT_NAME}.WebClient in Release mode"
@@ -31,18 +31,13 @@ task :pack_thunk, [:target_server_moniker] => [:pack_webapi_thunk, :pack_webclie
 
 task :build_webapi_thunk do
     Dir.chdir(SRC_DIR) do
-        # Restore packages with nuget because `dotnet restore` has issues with
-        # restoring project references.
-        sh "nuget restore #{PROJECT_NAME}.sln"
-        
-        # Build all projects in the solution
         sh "dotnet build #{PROJECT_NAME}.sln --configuration #{CONFIGURATION}"
     end
 end
 
 task :build_webclient_thunk do
     Dir.chdir(SRC_WEBCLIENT_DIR) do
-        sh "npm ci && npm run build"
+        sh "npm install && npm run build"
     end
 end
 
