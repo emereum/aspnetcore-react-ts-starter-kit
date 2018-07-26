@@ -9,8 +9,10 @@ using TemplateProductName.Domain;
 using TemplateProductName.Persistence;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Internal;
+using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
@@ -37,12 +39,19 @@ namespace TemplateProductName.WebApi
         // services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
             // Add framework services.
             services
                 .AddMvc(options =>
                 {
                     // Do not cache mvc responses in IE
-                    options.Filters.Add(new ResponseCacheFilter(new CacheProfile { NoStore = true, Location = ResponseCacheLocation.None }));
+                    options.Filters.Add(new ResponseCacheFilter(new CacheProfile { NoStore = true, Location = ResponseCacheLocation.None }, new NullLoggerFactory()));
 
                     // Automatically set Http status codes depending on the type
                     // of action result returned from a controller action.
@@ -73,7 +82,8 @@ namespace TemplateProductName.WebApi
                     {
                         NamingStrategy = new CamelCaseNamingStrategy()
                     };
-                });
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Allow localhost cross-origin requests so
             // TemplateProductName.WebClient can communicate with the API
@@ -120,6 +130,7 @@ namespace TemplateProductName.WebApi
                 // todo: loggerFactory.AddEventLog();
                 // Temporarily just log to console in release mode.
                 loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+                app.UseHsts();
             }
 
             app.UseMvc();
@@ -130,6 +141,7 @@ namespace TemplateProductName.WebApi
             // SPA.
             app.UseSpaRouting();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
         }
     }
 }
