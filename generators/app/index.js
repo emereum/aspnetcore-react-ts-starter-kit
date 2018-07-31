@@ -40,7 +40,7 @@ module.exports = class extends Generator {
             function(x) { return x.replace(/[^a-zA-Z0-9]/g, "").toLowerCase(); },
             
             // kebab-case
-            function(x) { return x.replace(/ /g, "-").replace(/[^-a-zA-Z0-9]/, "").toLowerCase(); }
+            function(x) { return x.replace(/ /g, "-").replace(/[^-a-zA-Z0-9]/, "").toLowerCase(); },
             
             // snake_case
             function(x) { return x.replace(/ /g, "_").replace(/[^-a-zA-Z0-9]/, "").toLowerCase(); }
@@ -91,11 +91,6 @@ module.exports = class extends Generator {
                 this.registerTransformStream(replace(findRegex, replaceValue));
             }.bind(this));
         }.bind(this));
-        
-        // Rename .npmignore to .gitignore
-         this.registerTransformStream(rename(function(path) {
-            path.basename = path.basename.replace(".npmignore", ".gitignore");
-        }));
     }
     
     _copyTemplateToOutputFolder() {
