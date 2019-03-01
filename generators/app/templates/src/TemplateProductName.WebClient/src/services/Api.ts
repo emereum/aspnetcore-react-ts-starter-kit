@@ -39,9 +39,6 @@ class Api {
             // Attempt to parse the JSON response if it's a JSON response
             .then(this.maybeParseJson)
 
-            // Help the type system a bit...
-            .then(x => x as ApiResponse<TResponse>)
-
             // Update the loadable status (if we loaded the data)
             .then((x: ApiResponse<TResponse>) => {
 
@@ -139,7 +136,7 @@ class Api {
      * Converts an object to a URL query string like ?thing=blah&anotherThing=Yep
      * See: http://stackoverflow.com/questions/22678346/convert-javascript-object-to-url-parameters
      */ 
-    private parameterize(data: object) {
+    private parameterize(data: {[key:string]: any}) {
         return Object
             .keys(data)
             .map(k => encodeURIComponent(k) + "=" + this.encode(data[k]))
@@ -149,7 +146,7 @@ class Api {
     private encode(value: any) {
         if (value == null) {
             return "";
-        } else if (value instanceof moment) {
+        } else if (moment.isMoment(value)) {
             return encodeURIComponent(value.format());
         } else {
             return encodeURIComponent(value);

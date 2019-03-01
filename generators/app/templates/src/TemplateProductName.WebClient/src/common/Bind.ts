@@ -38,7 +38,7 @@ function Bind<TContext, TProp extends keyof TContext>(
             }
 
             if(onChange != null) {
-                onChange.apply(null, args);
+                onChange.apply(null, <any>args);
             }
         }),
         errors,

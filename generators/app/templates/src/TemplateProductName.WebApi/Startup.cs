@@ -83,7 +83,7 @@ namespace TemplateProductName.WebApi
                         NamingStrategy = new CamelCaseNamingStrategy()
                     };
                 })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Allow localhost cross-origin requests so
             // TemplateProductName.WebClient can communicate with the API
@@ -117,9 +117,6 @@ namespace TemplateProductName.WebApi
         {
             if (env.IsDevelopment())
             {
-                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-                loggerFactory.AddDebug();
-
                 // Allow cross-origin requests from localhost:3000 because
                 // TemplateProductName.WebClient and TemplateProductName.WebApi
                 // projects run on separate ports during development.
@@ -127,9 +124,6 @@ namespace TemplateProductName.WebApi
             }
             else
             {
-                // todo: loggerFactory.AddEventLog();
-                // Temporarily just log to console in release mode.
-                loggerFactory.AddConsole(Configuration.GetSection("Logging"));
                 app.UseHsts();
             }
 

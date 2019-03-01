@@ -6,6 +6,7 @@ import CreateDinosaurComponent from "./features/dinosaur/CreateDinosaurComponent
 import ErrorBoundaryComponent from "./features/errors/ErrorBoundaryComponent";
 import NotFoundComponent from "./features/errors/NotFoundComponent";
 import HomeComponent from "./features/home/HomeComponent";
+import "react-toastify/dist/ReactToastify.css";
 
 const contentStyle = {
   marginTop: "50px",
