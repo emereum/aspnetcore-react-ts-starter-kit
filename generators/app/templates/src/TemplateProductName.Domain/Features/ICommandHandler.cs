@@ -55,16 +55,16 @@ namespace TemplateProductName.Domain.Features
     /// <typeparam name="TCommand"></typeparam>
     public interface ICommandHandler<in TCommand>
     {
-        IErrorResponse Handle(TCommand command);
+        IErrors Handle(TCommand command);
     }
 
     /// <summary>
     /// In very rare circumstances we may want to return something other than
-    /// an IErrorResponse from a command (such as a job id for an async
-    /// operation). In these cases the IBaseCommandHandler can be used. If the
-    /// command needs to return one of several types of responses (such as a
-    /// success response object or an error response object),
-    /// use LanguageExt.Either or OneOf to define the TResponse type.
+    /// an IErrors from a command (such as a job id for an async operation).
+    /// In these cases the IBaseCommandHandler can be used. If the command needs
+    /// to return one of several types of responses (such as a success response
+    /// object or an error response object), use LanguageExt.Either or OneOf to
+    /// define the TResponse type.
     /// </summary>
     /// <typeparam name="TCommand"></typeparam>
     /// <typeparam name="TResponse"></typeparam>

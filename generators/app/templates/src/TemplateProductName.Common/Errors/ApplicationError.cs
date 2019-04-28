@@ -4,7 +4,7 @@ namespace TemplateProductName.Common.Errors
     /// A higher-level error than ValidationErrors. This can contain only one
     /// error message that describes why the entire request failed.
     /// </summary>
-    public class ApplicationError : IErrorResponse
+    public class ApplicationError : IErrors
     {
         public string Code { get; }
         public string Message { get; }

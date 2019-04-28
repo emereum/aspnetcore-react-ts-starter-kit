@@ -29,7 +29,7 @@ namespace TemplateProductName.Common
         /// their corresponding entities when a hierarchy of objects is being
         /// validated.
         /// </summary>
-        public static IErrorResponse ToErrorResponse(this ValidationResult validationResult)
+        public static IErrors ToErrorResponse(this ValidationResult validationResult)
         {
             if (validationResult.IsValid)
             {
@@ -43,7 +43,7 @@ namespace TemplateProductName.Common
             {
                 throw new InvalidOperationException(
                     $"Validation rule for '{badValidationResult.ErrorMessage}' " +
-                    $"must have .WithGuid() to support IErrorResponse.");
+                    $"must have .WithGuid() to support IErrors.");
             }
 
             var errors =

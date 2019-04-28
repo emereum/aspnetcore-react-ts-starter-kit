@@ -1,4 +1,4 @@
 namespace TemplateProductName.Common.Errors
 {
-    public interface IErrorResponse { }
+    public interface IErrors { }
 }

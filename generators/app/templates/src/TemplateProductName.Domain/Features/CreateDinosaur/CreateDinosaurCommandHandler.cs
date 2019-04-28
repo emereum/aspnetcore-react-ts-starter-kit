@@ -9,7 +9,7 @@ namespace TemplateProductName.Domain.Features.CreateDinosaur
 
         public CreateDinosaurCommandHandler(CreateDinosaurValidator validator) => this.validator = validator;
 
-        public IErrorResponse Handle(CreateDinosaurCommand command)
+        public IErrors Handle(CreateDinosaurCommand command)
         {
             var errors = validator.Validate(command);
 

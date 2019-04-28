@@ -13,7 +13,7 @@ namespace TemplateProductName.WebApi.Controllers
         public DinosaursController(IMediator mediator) => this.mediator = mediator;
 
         [HttpPost]
-        public IErrorResponse Post(CreateDinosaurCommand command) =>
+        public IErrors Post(CreateDinosaurCommand command) =>
             mediator.Send<CreateDinosaurCommandHandler>(command);
     }
 }

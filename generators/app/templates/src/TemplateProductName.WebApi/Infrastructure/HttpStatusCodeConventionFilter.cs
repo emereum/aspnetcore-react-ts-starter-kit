@@ -9,7 +9,7 @@ namespace TemplateProductName.WebApi.Infrastructure
     /// <summary>
     /// Inspects the action result object being returned from the controller
     /// action and sets an appropriate status code. This can be used in cases
-    /// where a specific object type (such as IErrorResponse) should always
+    /// where a specific object type (such as IErrors) should always
     /// be returned with a specific Http status code.
     /// 
     /// This saves having to set the status code manually in every controller
@@ -19,12 +19,12 @@ namespace TemplateProductName.WebApi.Infrastructure
     {
         public override void OnResultExecuting(ResultExecutingContext context)
         {
-            if (context.Result is ObjectResult objectResult && objectResult.Value is IErrorResponse)
+            if (context.Result is ObjectResult objectResult && objectResult.Value is IErrors)
             {
                 if (objectResult.StatusCode != null)
                 {
                     throw new InvalidOperationException(
-                        "An IErrorResponse should always be returned with " +
+                        "An IErrors should always be returned with " +
                         "status code 400 but this response was set to status " +
                         "code " + objectResult.StatusCode);
                 }

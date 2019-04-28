@@ -14,7 +14,9 @@ This is the repository for Template Product Name.
 * View http://localhost:3000
 * Open `src\TemplateProductName.WebClient` with Visual Studio Code
 
-## Developing features
+## Developer guide
+
+### How to write api endpoints
 
 Controllers should be thin; they only delegate `Commands` to `CommandHandlers` via an `IMediator`:
 
@@ -27,7 +29,7 @@ public class UserController: Controller
     public UserController(IMediator mediator) => this.mediator = mediator;
     
     [HttpPost]
-    public IErrorResponse Post(CreateUserCommand command) =>
+    public IErrors Post(CreateUserCommand command) =>
         mediator.Send<CreateUserCommandHandler>(command);
 }
 ```
@@ -42,7 +44,7 @@ public class CreateUserCommand
 }
 ```
 
-`Commands` should be handled by a `CommandHandler`. Generally a `CommandHandler` should return nothing if the command was handled successfully, or an `IErrorResponse` if the command was invalid. Don't assume what the consumer wants to see in response to a command, let the consumer query for that information separately. This makes for more reusable Apis:
+`Commands` should be handled by a `CommandHandler`. Generally a `CommandHandler` should return nothing if the command was handled successfully, or an `IErrors` if the command was invalid. Don't assume what the consumer wants to see in response to a command, let the consumer query for that information separately. This makes for more reusable Apis:
 
 ```
 public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
@@ -56,7 +58,7 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
         this.repository = repository;
     }
     
-    public IErrorResponse Handle(CreateUserCommand command)
+    public IErrors Handle(CreateUserCommand command)
     {
         var errors = validator.Validate(command);
         
@@ -71,11 +73,17 @@ public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
 }
 ```
 
+Please read the source code documentation on `ICommandHandler` and `IQueryHandler` for more information about this design.
+
 ### Why do this?
 * Business logic is kept out of the controller. The controller's only responsibility is to receive a command, delegate it to a handler, then pass the results back to the consumer in some HTTP-oriented fashion (such as in a JSON response).
 * Testing is easier. One feature will be associated with one `CommandHandler` so we can instantiate that `CommandHandler` in a test, pass in a `Command` and verify the outputs.
 * It allows us to structure the source code into feature folders where each feature folder has a single `Command` and `CommandHandler`.
 * Developers can focus their effort on small vertical slices of the application without having to understand the application as a whole. This can boost a developer's productivity when they are new to the project.
+
+### Paginating queries
+
+To paginate a query response make your query inherit from `PaginationOptions` and use the `PaginationExtensions.Paginate` extension method in your `IQueryHandler` implementation to return a paginated response.
 
 ## Folder structure
 

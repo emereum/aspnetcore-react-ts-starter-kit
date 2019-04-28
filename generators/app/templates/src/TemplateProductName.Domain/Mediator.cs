@@ -28,18 +28,18 @@ namespace TemplateProductName.Domain
         /// <summary>
         /// Instantiate a CommandHandler of type TCommandHandler and use it to
         /// handle the specified command. Assumes the return type of the
-        /// CommandHandler is IErrorResponse.
+        /// CommandHandler is IErrors.
         /// </summary>
         /// <typeparam name="TCommandHandler"></typeparam>
         /// <param name="command"></param>
         /// <returns></returns>
         [DebuggerStepThrough]
-        public IErrorResponse Send<TCommandHandler>(object command) =>
-            BaseSend<TCommandHandler, IErrorResponse>(command);
+        public IErrors Send<TCommandHandler>(object command) =>
+            BaseSend<TCommandHandler, IErrors>(command);
 
         /// <summary>
         /// In rare circumstances a command may return something other than
-        /// an IErrorResponse. BaseSend can be used in this case.
+        /// an IErrors. BaseSend can be used in this case.
         /// </summary>
         /// <typeparam name="TCommandHandler"></typeparam>
         /// <typeparam name="TResponse"></typeparam>
