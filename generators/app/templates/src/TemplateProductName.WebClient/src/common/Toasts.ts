@@ -1,6 +1,4 @@
-import { toast, style } from "react-toastify";
-
-style({ width: "600px" });
+import { toast } from "react-toastify";
 
 /**
  * Ensures that only one instance of a particular toast is visible at a time
