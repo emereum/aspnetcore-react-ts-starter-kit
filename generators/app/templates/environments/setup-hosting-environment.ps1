@@ -24,7 +24,7 @@ Import-module WebAdministration
     cinst dotnetcore-windowshosting --version 2.0.0 -y
     
     # OpenSSH server
-    cinst openssh -params '"/SSHServerFeature"' -y
+    cinst openssh --version 0.0.24.0 -params '"/SSHServerFeature"' -y
     
 # Configuration
     # Reload path so we have access to ssh tools
