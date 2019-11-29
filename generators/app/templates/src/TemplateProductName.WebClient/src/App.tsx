@@ -7,6 +7,8 @@ import ErrorBoundaryComponent from "./features/errors/ErrorBoundaryComponent";
 import NotFoundComponent from "./features/errors/NotFoundComponent";
 import HomeComponent from "./features/home/HomeComponent";
 import "react-toastify/dist/ReactToastify.css";
+import AppStore from "./features/app/AppStore";
+import SignInComponent from "./features/sign-in/SignInComponent";
 
 const contentStyle = {
   marginTop: "50px",
@@ -23,6 +25,8 @@ class App extends React.Component<{}, {}> {
           <Menu className="inverted fixed">
             <Menu.Item as={Link} to="/"><strong>Template Product Name</strong></Menu.Item>
             <Menu.Item as={Link} to="/dinosaur/create">Create Dinosaur</Menu.Item>
+            {!AppStore.isSignedIn && <Menu.Item as={Link} to="/sign-in">Sign In</Menu.Item>}
+            {AppStore.isSignedIn && <Menu.Item as={Link} to="/#" onClick={() => AppStore.signOut()}>Sign Out</Menu.Item>}
           </Menu>
 
           {/* Component route mappings */}
@@ -32,6 +36,7 @@ class App extends React.Component<{}, {}> {
               <Switch>
                 <Route path="/" exact={true} component={HomeComponent} />
                 <Route path="/dinosaur/create" component={CreateDinosaurComponent} />
+                <Route path="/sign-in" component={SignInComponent} />
                 <Route component={NotFoundComponent} />
               </Switch>
             </div>

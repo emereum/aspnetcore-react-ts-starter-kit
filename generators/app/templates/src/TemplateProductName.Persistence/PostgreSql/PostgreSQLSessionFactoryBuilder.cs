@@ -4,6 +4,7 @@ using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Cfg;
 using TemplateProductName.Persistence.PostgreSQL.Conventions;
+using NHibernate.Tool.hbm2ddl;
 
 namespace TemplateProductName.Persistence.PostgreSQL
 {
@@ -33,7 +34,7 @@ namespace TemplateProductName.Persistence.PostgreSQL
         private static void Configure(Configuration configuration, Assembly mappingAssembly)
         {
             // Update database schema
-            //new SchemaUpdate(configuration).Execute(false, true);
+            // new SchemaUpdate(configuration).Execute(false, true);
 
 #if DEBUG
             // Log all SQL queries to the debug output

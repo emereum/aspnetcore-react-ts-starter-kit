@@ -104,7 +104,7 @@ This repository contains several components:
 
 ### A web API consisting of:
 
-* An ASP.NET Core MVC 2.0.8 application targeting `netcoreapp2.0`
+* An ASP.NET Core webapi application targeting `netcoreapp3.0`
 * [AutoFac](https://autofac.org/)
 * [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
 * [FluentNHibernate](http://www.fluentnhibernate.org/)

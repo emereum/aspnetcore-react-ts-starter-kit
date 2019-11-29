@@ -9,8 +9,8 @@ namespace TemplateProductName.Domain.Features.CreateDinosaur
             RuleFor(x => x.Name)
                 .Cascade(CascadeMode.StopOnFirstFailure)
                 .NotEmpty()
-                .WithGuid()
+                .WithId()
                 .MinimumLength(10)
-                .WithGuid();
+                .WithId();
     }
 }

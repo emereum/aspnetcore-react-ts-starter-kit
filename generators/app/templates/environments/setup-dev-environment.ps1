@@ -6,7 +6,7 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/in
 
 # Dev environment
 & ".\setup-build-environment.ps1"
-cinst visualstudio2017community -y
+cinst visualstudio2019community -y
 cinst visualstudiocode -y
 cinst javaruntime -y
 cinst flyway.commandline --version 4.2.0 -y

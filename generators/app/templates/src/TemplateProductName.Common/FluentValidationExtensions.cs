@@ -17,15 +17,15 @@ namespace TemplateProductName.Common
             this IRuleBuilderInitial<T, TProperty> builder, string format) =>
             builder.SetValidator(new NumberFormatValidator(format));
 
-        public static IRuleBuilderOptions<TModel, TReturn> WithGuid<TModel, TReturn>(this IRuleBuilderOptions<TModel, TReturn> builder) where TModel : IHasGuid =>
-            builder.WithState(x => x.Guid);
+        public static IRuleBuilderOptions<TModel, TReturn> WithId<TModel, TReturn>(this IRuleBuilderOptions<TModel, TReturn> builder) where TModel : IHasId =>
+            builder.WithState(x => x.Id);
 
         /// <summary>
-        /// Returns a list of errors including the Guid of the model that caused
+        /// Returns a list of errors including the Id of the model that caused
         /// the error (which is retrieved from their CustomState field).
         /// Validators should set each error state to entity-under-validation's 
-        /// Guid and use this method to provide error responses back to a
-        /// client. The client can then use the Guids to map errors back to
+        /// Id and use this method to provide error responses back to a
+        /// client. The client can then use the Ids to map errors back to
         /// their corresponding entities when a hierarchy of objects is being
         /// validated.
         /// </summary>
@@ -36,14 +36,14 @@ namespace TemplateProductName.Common
                 return null;
             }
 
-            // Ensure all validation results are tied to their model guids
+            // Ensure all validation results are tied to their model ids
             var badValidationResult = validationResult.Errors.FirstOrDefault(x => x.CustomState == null);
 
             if (badValidationResult != null)
             {
                 throw new InvalidOperationException(
                     $"Validation rule for '{badValidationResult.ErrorMessage}' " +
-                    $"must have .WithGuid() to support IErrors.");
+                    $"must have .WithId() to support IErrors.");
             }
 
             var errors =

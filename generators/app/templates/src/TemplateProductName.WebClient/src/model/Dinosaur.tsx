@@ -2,11 +2,11 @@ import { observable } from "mobx";
 import * as uuid from "uuid";
 
 export default class Dinosaur {
-    @observable guid: string;
+    @observable id: string;
     @observable name: string;
 
     constructor() {
-        this.guid = uuid.v4();
+        this.id = uuid.v4();
         this.name = "";
     }
 }

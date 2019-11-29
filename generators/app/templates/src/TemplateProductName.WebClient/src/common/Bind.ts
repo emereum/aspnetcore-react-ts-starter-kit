@@ -42,7 +42,7 @@ function Bind<TContext, TProp extends keyof TContext>(
             }
         }),
         errors,
-        errorProperty: errorProperty || errors
+        errorProperty: errorProperty || property
     };
 }
 

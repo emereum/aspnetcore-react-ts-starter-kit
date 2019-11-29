@@ -9,6 +9,7 @@ TestResult.xml
 
 # Chocolatey artifacts
 *.nupkg
+choco.log
 
 # Local config files
-*.local.json
+appsettings.development.json

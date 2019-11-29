@@ -41,7 +41,6 @@ class Api {
 
             // Update the loadable status (if we loaded the data)
             .then((x: ApiResponse<TResponse>) => {
-
                 if(loadable != null) {
                     loadable.loaded(x.data);
                 }
@@ -55,7 +54,7 @@ class Api {
                 if(loadable != null) {
                     loadable.networkError();
                 }
-                return reason;
+                throw reason;
             });
     }
 
@@ -89,7 +88,7 @@ class Api {
             })
 
             // Attempt to parse the JSON response if it's a JSON response
-            .then(x => this.maybeParseJson(x))
+            .then(this.maybeParseJson)
 
             // Help the type system a bit...
             .then(x => x as ApiResponse<TResponse>)

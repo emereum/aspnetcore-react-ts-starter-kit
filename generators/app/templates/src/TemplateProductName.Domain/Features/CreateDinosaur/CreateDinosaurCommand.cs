@@ -3,9 +3,9 @@ using TemplateProductName.Common;
 
 namespace TemplateProductName.Domain.Features.CreateDinosaur
 {
-    public class CreateDinosaurCommand : IHasGuid
+    public class CreateDinosaurCommand : IHasId
     {
-        public Guid Guid { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
     }
 }

@@ -8,14 +8,14 @@ namespace TemplateProductName.Common.Errors
     /// </summary>
     public class ValidationError
     {
-        public Guid Guid { get; }
+        public Guid Id { get; }
         public string Property { get; set; }
         public string Code { get; set; }
         public string Message { get; set; }
 
-        public ValidationError(Guid guid, string property, string code, string message)
+        public ValidationError(Guid id, string property, string code, string message)
         {
-            Guid = guid;
+            Id = id;
             Property = property;
             Code = code;
             Message = message;

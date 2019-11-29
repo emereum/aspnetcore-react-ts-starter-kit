@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference = "Stop"; # stop on all errors
+$ErrorActionPreference = "Stop"; # stop on all errors
 Import-module webadministration # Need for test-path against iis sites / application pools
 
 $productName = "TemplateProductName"
@@ -13,20 +13,6 @@ $deploymentDir = $deploymentDriveLetter + "/deployments/$($productName)/"
 $deploymentWebDir = Join-Path $deploymentDir $projectName
 # Chocolatey will notify the user that the app has been installed to this path
 $env:ChocolateyPackageInstallLocation = $deploymentDir
-
-function RequireSuccess {
-    if($LASTEXITCODE -ne 0) {
-        throw "The previous command exited with exit code " +$LASTEXITCODE + ". The script will abort."
-    }
-}
-
-# Install flyway for database migrations. We'll run migrations when the website is offline
-cinst javaruntime -y
-RequireSuccess
-cinst flyway.commandline --version 4.2.0 -y
-RequireSuccess
-refreshenv
-RequireSuccess
 
 # Load serversettings.json
 $serverSettings = Get-Content -Raw -Path (Join-Path $packageDir "serversettings.json") | ConvertFrom-Json
@@ -76,13 +62,13 @@ if(Test-Path $deploymentWebDir) {
 }
 
 # Perform database migration
-WRite-Host "Performing database migration..."
-& "flyway" "-configFile=`"$(Join-Path $packageDbDir "flyway.conf")`"" "-locations=`"filesystem:$($packageDbDir)`"" "migrate"
-RequireSuccess
-& "flyway" "-configFile=`"$(Join-Path $packageDbDir "flyway.conf")`"" "-locations=`"filesystem:$($packageDbDir)`"" "info"
-RequireSuccess
-& "flyway" "-configFile=`"$(Join-Path $packageDbDir "flyway.conf")`"" "-locations=`"filesystem:$($packageDbDir)`"" "validate"
-RequireSuccess
+#WRite-Host "Performing database migration..."
+#& "flyway" "-configFile=`"$(Join-Path $packageDbDir "flyway.conf")`"" "-locations=`"filesystem:$($packageDbDir)`"" "migrate"
+# # RequireSuccess
+#& "flyway" "-configFile=`"$(Join-Path $packageDbDir "flyway.conf")`"" "-locations=`"filesystem:$($packageDbDir)`"" "info"
+# #RequireSuccess
+#& "flyway" "-configFile=`"$(Join-Path $packageDbDir "flyway.conf")`"" "-locations=`"filesystem:$($packageDbDir)`"" "validate"
+# # RequireSuccess
 
 Write-Host "Copying new deployment..."
 Copy-Item -Recurse $packageWebDir $deploymentWebDir

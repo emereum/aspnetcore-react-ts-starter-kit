@@ -18,10 +18,10 @@ export default class CreateDinosaurComponent extends React.Component<{}, {}> {
         return (
             <div>
                 <h1>Create Dinosaur</h1>
-                <GeneralErrors errors={createDinosaurResult.data} guid={dinosaur.guid} />
+                <GeneralErrors errors={createDinosaurResult.data} id={dinosaur.id} />
 
                 <label>Name:</label>
-                <PropertyErrors errors={createDinosaurResult.data} guid={dinosaur.guid} errorProperty="name">
+                <PropertyErrors errors={createDinosaurResult.data} id={dinosaur.id} errorProperty="name">
                     <input type="text" {...bind("name")} disabled={createDinosaurResult.isLoading} />
                 </PropertyErrors>
                 <Button

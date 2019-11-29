@@ -6,12 +6,20 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="Dapper" Version="2.0.30" />
     <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
     <PackageReference Include="NHibernate" Version="5.1.2" />
+    <PackageReference Include="Stripe.net" Version="33.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TemplateProductName.Common\TemplateProductName.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="FluentNHibernate">
+      <HintPath>C:\Users\root\.nuget\packages\fluentnhibernate\2.1.2\lib\netstandard2.0\FluentNHibernate.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

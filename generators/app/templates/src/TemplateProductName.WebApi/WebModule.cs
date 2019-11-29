@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Security.Claims;
 using Autofac;
+using TemplateProductName.WebApi.Services;
 using Microsoft.AspNetCore.Http;
 using Module = Autofac.Module;
 
@@ -26,6 +27,10 @@ namespace TemplateProductName.WebApi
                 .Where(t => t.Namespace != null && t.Namespace.Contains("Models") && t.Name.EndsWith("Model"))
                 .AsSelf()
                 .InstancePerLifetimeScope();
+
+            // Services (Usually services that use HttpContext as implementation
+            // but are needed by the domain, like authentication features)
+            builder.RegisterType<AuthenticationService>().As<Domain.Services.IAuthenticationService>();
 
             // Current user
             builder.Register(x =>

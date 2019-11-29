@@ -21,10 +21,14 @@ Import-module WebAdministration
     
     # IIS and dotnet core windows hosting
     cinst IIS-WebServerRole -source WindowsFeatures -y
-    cinst dotnetcore-windowshosting --version 2.0.0 -y
+    cinst dotnetcore-windowshosting --version 3.0.0 -y
     
     # OpenSSH server
-    cinst openssh --version 0.0.24.0 -params '"/SSHServerFeature"' -y
+    cinst openssh -params '"/SSHServerFeature"' -y
+    
+    # Install flyway for database migrations
+    cinst javaruntime -y
+    cinst flyway.commandline --version 4.2.0 -y
     
 # Configuration
     # Reload path so we have access to ssh tools

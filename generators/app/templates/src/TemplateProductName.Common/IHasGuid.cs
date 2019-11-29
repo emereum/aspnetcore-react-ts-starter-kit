@@ -2,8 +2,8 @@ using System;
 
 namespace TemplateProductName.Common
 {
-    public interface IHasGuid
+    public interface IHasId
     {
-        Guid Guid { get; }
+        Guid Id { get; }
     }
 }

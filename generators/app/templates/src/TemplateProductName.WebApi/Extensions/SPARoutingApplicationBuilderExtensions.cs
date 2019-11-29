@@ -7,9 +7,10 @@ namespace TemplateProductName.WebApi.Extensions
     public static class SpaRoutingApplicationBuilderExtensions
     {
         /// <summary>
-        /// Rewrite all requests to /index.html except for:
-        /// * Requests to /api/*
-        /// * Requests to files (any URL with a "." in the path)
+        /// Rewrite all non-api and non-file requests to /index.html.
+        /// Specifically, requests starting with /api/ and requests
+        /// to files (any URL with a "." in the path) are the only
+        /// requests that will not be rewritten to index.html.
         /// 
         /// This should be used in conjunction with and before
         /// app.UseStaticFiles().
@@ -28,13 +29,6 @@ namespace TemplateProductName.WebApi.Extensions
                 if (isSpaRequest)
                 {
                     context.Request.Path = PathString.FromUriComponent("/index.html");
-                }
-                else
-                {
-                    // It's an api request that has 404'd from app.UseMvc();
-                    // ensure we don't cache it
-                    context.Response.Headers["Cache-Control"] = "no-store,no-cache";
-                    context.Response.Headers["Pragma"] = "no-cache";
                 }
 
                 await next.Invoke();

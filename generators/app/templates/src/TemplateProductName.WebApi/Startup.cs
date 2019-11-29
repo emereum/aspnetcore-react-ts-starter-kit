@@ -11,48 +11,39 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Internal;
 using Microsoft.Extensions.Logging.Abstractions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using TemplateProductName.WebApi.Extensions;
 using TemplateProductName.WebApi.Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Hosting;
 
 namespace TemplateProductName.WebApi
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("appsettings.local.json", optional: true, reloadOnChange: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add
         // services to the container.
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.CheckConsentNeeded = context => false;
+                options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
 
             // Add framework services.
-            services
-                .AddMvc(options =>
+            services.AddControllers(options =>
                 {
-                    // Do not cache mvc responses in IE
-                    options.Filters.Add(new ResponseCacheFilter(new CacheProfile { NoStore = true, Location = ResponseCacheLocation.None }, new NullLoggerFactory()));
-
                     // Automatically set Http status codes depending on the type
                     // of action result returned from a controller action.
                     options.Filters.Add(new HttpStatusCodeConventionFilter());
@@ -62,13 +53,13 @@ namespace TemplateProductName.WebApi
                     // complex type parameter.
                     options.Conventions.Add(new BindComplexTypesFromBodyConvention());
                 })
-                .AddJsonOptions(jsonOptions =>
+                .AddNewtonsoftJson(jsonOptions =>
                 {
                     // Trim strings when deserializing JSON payloads.
                     jsonOptions.SerializerSettings.Converters.Add(new TrimStringsJsonConverter());
 
                     // Serialize enums as strings, not ints.
-                    jsonOptions.SerializerSettings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
+                    jsonOptions.SerializerSettings.Converters.Add(new StringEnumConverter { NamingStrategy = new CamelCaseNamingStrategy() });
 
                     // Assume dates are being submitted in the same timezone
                     // as the server's timezone. This is only appropriate
@@ -82,8 +73,14 @@ namespace TemplateProductName.WebApi
                     {
                         NamingStrategy = new CamelCaseNamingStrategy()
                     };
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+                });
+
+            services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
+
+            services
+                .AddHttpContextAccessor(); // Enable resolving IHttpContextAccessor through DI.
 
             // Allow localhost cross-origin requests so
             // TemplateProductName.WebClient can communicate with the API
@@ -95,26 +92,43 @@ namespace TemplateProductName.WebApi
                 Methods = { "*" },
                 SupportsCredentials = true,
             }));
+        }
 
-            // Create the container builder.
-            var builder = new ContainerBuilder();
-
-            // Register dependencies, populate the services from
-            // the collection, and build the container.
+        // ConfigureContainer is where you can register things directly
+        // with Autofac. This runs after ConfigureServices so the things
+        // here will override registrations made in ConfigureServices.
+        //
+        // See: https://autofac.readthedocs.io/en/latest/integration/aspnetcore.html#asp-net-core-3-0-and-generic-hosting
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
             builder.RegisterModule(new PersistenceModule(Configuration["ConnectionString"], Configuration["MappingAssembly"]));
             builder.RegisterModule<DomainModule>();
             builder.RegisterModule<WebModule>();
-            builder.Populate(services);
-            var container = builder.Build();
-
-            // Return the IServiceProvider resolved from the container.
-            return container.Resolve<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure
         // the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            // For pipeline ordering, see https://docs.microsoft.com/en-us/aspnet/core/security/gdpr?view=aspnetcore-3.0
+            // also see https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-3.0
+
+            if(env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseHsts();
+            if (!env.IsDevelopment())
+            {
+                app.UseHttpsRedirectionElbAware();
+            }
+            app.UseSpaRouting();
+            app.UseStaticFiles();
+            app.UseMinimalCaching();
+            app.UseCookiePolicy();
+            app.UseRouting();
+
             if (env.IsDevelopment())
             {
                 // Allow cross-origin requests from localhost:3000 because
@@ -122,20 +136,11 @@ namespace TemplateProductName.WebApi
                 // projects run on separate ports during development.
                 app.UseCors("allowlocal");
             }
-            else
-            {
-                app.UseHsts();
-            }
 
-            app.UseMvc();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
-            // Rewrite all non-api and non-file requests to /index.html which
-            // is where the SPA artifacts are deployed in production. This
-            // allows a client-side router to delegate URLs to pages within the
-            // SPA.
-            app.UseSpaRouting();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

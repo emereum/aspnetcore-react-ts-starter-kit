@@ -1,5 +1,5 @@
 export default class ValidationError {
-    guid: string = "";
+    id: string = "";
     property: string = "";
     code: string = "";
     message: string = "";
