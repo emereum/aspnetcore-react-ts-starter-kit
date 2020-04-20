@@ -1,5 +1,5 @@
 $ErrorActionPreference = "Stop"; # stop on all errors
-Import-module webadministration # Need for test-path against iis sites / application pools
+Import-Module WebAdministration # Need for test-path against iis sites / application pools
 
 $productName = "TemplateProductName"
 $projectName = "TemplateProductName.WebApi"

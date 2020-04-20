@@ -85,7 +85,6 @@ namespace TemplateProductName.WebApi.Services
             }
 
             var user = httpContextAccessor.HttpContext.User;
-
             
             return new UserModel
             {
@@ -93,7 +92,5 @@ namespace TemplateProductName.WebApi.Services
                 Email = user.FindFirstValue(ClaimTypes.Email)
             };
         }
-
-        private static string GetValue(IEnumerable<Claim> claims, string type) => claims.Single(x => x.Type == type).Value;
     }
 }
