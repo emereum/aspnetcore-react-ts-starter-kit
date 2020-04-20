@@ -18,18 +18,18 @@ export default class Loadable<TResponse> {
     @computed get isLoaded() { return this.status === "loaded"; }
     @computed get hasNetworkError() { return this.status === "networkError"; }
 
-    loading = action(() => {
+    @action loading = () => {
         this.status = "loading";
         this.data = undefined;
-    });
+    };
 
-    loaded = action((data?: TResponse) => {
+    @action loaded = (data?: TResponse) => {
         this.status = "loaded";
         this.data = data;
-    });
+    };
 
-    networkError = action(() => {
+    @action networkError =() => {
         this.status = "networkError";
         this.data = undefined;
-    });
+    };
 }

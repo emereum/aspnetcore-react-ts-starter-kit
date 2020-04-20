@@ -44,7 +44,7 @@ public class CreateUserCommand
 }
 ```
 
-`Commands` should be handled by a `CommandHandler`. Generally a `CommandHandler` should return nothing if the command was handled successfully, or an `IErrors` if the command was invalid. Don't assume what the consumer wants to see in response to a command, let the consumer query for that information separately. This makes for more reusable Apis:
+A `Command` should be handled by a `CommandHandler`. Generally a `CommandHandler` should return nothing if the command was handled successfully, or an `IErrors` if the command was invalid. Don't assume what the consumer wants to see in response to a command, let the consumer query for that information separately. This makes for more reusable Apis:
 
 ```
 public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
@@ -102,9 +102,10 @@ To paginate a query response make your query inherit from `PaginationOptions` an
 
 This repository contains several components:
 
-### A web API consisting of:
+### A web Api consisting of:
 
-* An ASP.NET Core webapi application targeting `netcoreapp3.0`
+* An ASP.NET Core web Api targeting `netcoreapp3.1`
+* Several projects to support project organisation and design patterns targeting `netstandard2.0`
 * [AutoFac](https://autofac.org/)
 * [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
 * [FluentNHibernate](http://www.fluentnhibernate.org/)
