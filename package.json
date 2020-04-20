@@ -1,24 +1,24 @@
 {
-  "version": "1.0.6",
-  "name": "generator-hoflogic-spa",
-  "description": "Generates an ASP.NET Core web API and a React + MobX SPA in TypeScript using Yeoman",
-  "files": [
-    "generators"
-  ],
-  "keywords": [
-    "yeoman-generator",
-    "spa",
-    "spa template",
-    "dotnet core template"
-  ],
-  "author": "hoflogic",
+  "name": "aspnetcore-react-ts-starter-kit",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node index.js"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hoflogic/generator-hoflogic-spa"
+    "url": "git+https://github.com/hoflogic/generator-hoflogic-spa.git"
   },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hoflogic/generator-hoflogic-spa/issues"
+  },
+  "homepage": "https://github.com/hoflogic/generator-hoflogic-spa#readme",
   "dependencies": {
-    "gulp-rename": "1.2.2",
-    "gulp-replace": "^0.5.4",
-    "yeoman-generator": "^2.0.1"
+    "gulp": "^4.0.2",
+    "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.0.0",
+    "prompts": "^2.3.2"
   }
 }
