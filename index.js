@@ -66,6 +66,6 @@ const replace = require("gulp-replace");
                 // Map file contents
                 .pipe(replace(findRegex, replaceValue));
         },
-        gulp.src("generators/**/*"))
-        .pipe(gulp.dest("output-changeme"));
+        gulp.src(__dirname + "/template/**/*"))
+        .pipe(gulp.dest("."));
 })();
