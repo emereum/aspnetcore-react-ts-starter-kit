@@ -10,7 +10,7 @@ This project generates an ASP.NET Core web Api and a React + MobX SPA in TypeScr
 (from an aspnetcore-react-ts-starter-kit working directory)
 npm install
 
-(froma directory in which you want to start a new project)
+(from a directory in which you want to start a new project)
 npx d:/path/to/aspnetcore-react-ts-starter-kit
 ```
 

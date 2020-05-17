@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <GenerateCode>True</GenerateCode>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NSwag.MSBuild" Version="13.4.2">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  
+  <!-- The sole purpose of this project is to run nswag on every build to generate the TypeScript client. -->
+  <!-- The client generator options in nswag.json can be regenerated using NSwagStudio or edited manually. -->
+  <Target Name="NSwag" BeforeTargets="PrepareForBuild" Condition="'$(GenerateCode)'=='True' ">
+    <Exec Command="$(NSwagExe_Core31) run $(ProjectDir)nswag.json /variables:Configuration=$(Configuration)" />
+  </Target>
+</Project>

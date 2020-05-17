@@ -24,10 +24,7 @@ namespace TemplateProductName.WebApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
@@ -79,8 +76,9 @@ namespace TemplateProductName.WebApi
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
 
-            services
-                .AddHttpContextAccessor(); // Enable resolving IHttpContextAccessor through DI.
+            services.AddHttpContextAccessor(); // Enable resolving IHttpContextAccessor through DI.
+
+            services.AddOpenApiDocument(); // For NSwagStudio "Use document provider" option
 
             // Allow localhost cross-origin requests so
             // TemplateProductName.WebClient can communicate with the API

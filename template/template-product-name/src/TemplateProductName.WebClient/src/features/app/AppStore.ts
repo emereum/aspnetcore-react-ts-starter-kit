@@ -50,10 +50,6 @@ class AppStore {
             // first load.
             this.loadUser();
         }
-
-        // Warm up the API in case it's spun down
-        Api.get("/plans/search/iphone")
-
     }
 }
 
