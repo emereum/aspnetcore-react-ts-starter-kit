@@ -60,18 +60,14 @@ class Api {
 
     /**
      * Posts a command to the Api and returns a status code and optionally
-     * a list of errors. This should typically be used when invoking a command.
+     * some response data which should be a set of validation errors. This
+     * should typically be used when invoking a command.
+     * 
+     * The TResponse generic parameter should only be specified in rare
+     * circumstances when a command is expected to return something other than
+     * an OK response or a list of errors.
      */
-    post<TCommand>(url: string, data?: TCommand, loadable?: Loadable<ValidationErrors>) {
-        return this.postBase<TCommand, ValidationErrors>(url, data, loadable);
-    }
-
-    /**
-     * Posts a command to the Api and returns an object of type TResponse. This
-     * should only be used in rare circumstances when a command is expected to
-     * return something other than an OK response or a list of errors. 
-     */
-    postBase<TCommand, TResponse>(url: string, data?: TCommand, loadable?: Loadable<TResponse>) {
+    post<TCommand, TResponse = ValidationErrors>(url: string, data?: TCommand, loadable?: Loadable<TResponse>) {
         if(loadable != null) {
             loadable.loading();
         }

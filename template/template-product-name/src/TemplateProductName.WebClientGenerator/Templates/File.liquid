@@ -7,6 +7,8 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
+import Api from "./Api";
+
 {{ ExtensionCodeImport -}}
 {% if ImportRequiredTypes -%}
 {%     if GenerateClientClasses -%}
@@ -104,7 +106,7 @@ namespace {{ Namespace }} {
 }
 
 {% endif -%}
-{% if RequiresFileResponseInterface -%}
+{% if false && RequiresFileResponseInterface -%}
 {% if ExportTypes %}export {% endif %}interface FileResponse {
     data: Blob;
     status: number;
@@ -113,7 +115,7 @@ namespace {{ Namespace }} {
 }
 
 {% endif -%}
-{% if RequiresExceptionClass -%}
+{% if false && RequiresExceptionClass -%}
 {% if ExportTypes %}export {% endif %}class {{ ExceptionClassName }} extends Error {
     message: string;
     status: number;
