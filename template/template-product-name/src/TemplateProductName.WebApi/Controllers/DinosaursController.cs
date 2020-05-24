@@ -15,5 +15,6 @@ namespace TemplateProductName.WebApi.Controllers
         [HttpPost]
         public IErrors Post(CreateDinosaurCommand command) =>
             mediator.Send<CreateDinosaurCommandHandler>(command);
+
     }
 }

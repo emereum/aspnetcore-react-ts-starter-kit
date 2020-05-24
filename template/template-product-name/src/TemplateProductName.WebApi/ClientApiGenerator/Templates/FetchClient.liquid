@@ -16,8 +16,8 @@
 {% endif -%}
 {% for operation in Operations -%}
     {% template Client.Method.Documentation %}
-    {{ operation.MethodAccessModifier }}{{ operation.ActualOperationName }} = ({% for parameter in operation.Parameters %}{{ parameter.VariableName }}{% if GenerateOptionalParameters and parameter.IsOptional %}?{% endif %}: {{ parameter.Type }}{{ parameter.TypePostfix }}{% if parameter.IsLast == false %}, {% endif %}{% endfor %}) =>
-        Api.{{operation.HttpMethodUpper | downcase }}<{{ operation.ContentParameter.Type | default: "{}" }}, {{ operation.ResultType }}>("{{ operation.Path | remove_first: "api" }}"{% if operation.HasBody -%}, {{ operation.ContentParameter.VariableName }}{% endif -%});
+    {{ operation.MethodAccessModifier }}{{ operation.ActualOperationName }} = ({% for parameter in operation.Parameters %}{{ parameter.VariableName }}{% if GenerateOptionalParameters and parameter.IsOptional %}?{% endif %}: {{ parameter.Type }}{{ parameter.TypePostfix }},{% if parameter.IsLast %} {% endif %}{% endfor %}loadable?: Loadable<{{ operation.ResultType }}>) =>
+        Api.{{operation.HttpMethodUpper | downcase }}("{{ operation.Path | remove_first: "api" }}", {% if operation.HasBody -%}{{ operation.ContentParameter.VariableName }}{% else -%}undefined{% endif -%}, loadable);
     
 {% endfor -%}
 }

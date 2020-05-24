@@ -19,12 +19,12 @@ namespace TemplateProductName.Persistence
                 {typeof (IPreInsertEventListener), ListenerType.PreInsert},
                 {typeof (IPreUpdateEventListener), ListenerType.PreUpdate}
             }
-            .Each(listener =>
+            .ForEach(listener =>
             {
                 assembly
                 .GetTypes()
                 .Where(x => x.ImplementsInterface(listener.Key))
-                .Each(x =>
+                .ForEach(x =>
                 {
                     var wrapper = Array.CreateInstance(x, 1);
                     wrapper.SetValue(Activator.CreateInstance(x), 0);

@@ -80,7 +80,7 @@ class Api {
                     ...defaultFetchOptions.headers,
                     "Content-Type": "application/json"
                 },
-                body: data != null ? JSON.stringify(data) : null
+                body: JSON.stringify(data || undefined)
             })
 
             // Attempt to parse the JSON response if it's a JSON response

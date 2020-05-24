@@ -8,29 +8,24 @@
 // ReSharper disable InconsistentNaming
 
 import Api from "./Api";
+import Loadable from "./Loadable";
 
 export class AuthenticationApi {
-
-    signIn = (command: SignInCommand) =>
-        Api.post<SignInCommand, IErrors>("/Authentication/signin", command);
-
-    signOut = () =>
-        Api.post<object, void>("/Authentication/signout");
-
-    me = () =>
-        Api.get<object, UserModel>("/Authentication/me");
+    signIn = (command: SignInCommand, loadable?: Loadable<IErrors>) =>
+        Api.post("/Authentication/signin", command, loadable);
+    
+    signOut = (loadable?: Loadable<void>) =>
+        Api.post("/Authentication/signout", undefined, loadable);
+    
+    me = (loadable?: Loadable<UserModel>) =>
+        Api.get("/Authentication/me", undefined, loadable);
+    
 }
 
 export class DinosaursApi {
-
-    post = (command: CreateDinosaurCommand) =>
-        Api.post<CreateDinosaurCommand, IErrors>("/Dinosaurs", command);
-}
-
-export class HomeApi {
-
-    index = () =>
-        Api.get<object, FileResponse>("/Home");
+    post = (command: CreateDinosaurCommand, loadable?: Loadable<IErrors>) =>
+        Api.post("/Dinosaurs", command, loadable);
+    
 }
 
 export interface IErrors {
@@ -49,42 +44,4 @@ export interface UserModel {
 export interface CreateDinosaurCommand {
     id?: string;
     name?: string | undefined;
-}
-
-export interface FileResponse {
-    data: Blob;
-    status: number;
-    fileName?: string;
-    headers?: { [name: string]: any };
-}
-
-export class ApiException extends Error {
-    message: string;
-    status: number;
-    response: string;
-    headers: { [key: string]: any; };
-    result: any;
-
-    constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
-        super();
-
-        this.message = message;
-        this.status = status;
-        this.response = response;
-        this.headers = headers;
-        this.result = result;
-    }
-
-    protected isApiException = true;
-
-    static isApiException(obj: any): obj is ApiException {
-        return obj.isApiException === true;
-    }
-}
-
-function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
-    if (result !== null && result !== undefined)
-        throw result;
-    else
-        throw new ApiException(message, status, response, headers, null);
 }

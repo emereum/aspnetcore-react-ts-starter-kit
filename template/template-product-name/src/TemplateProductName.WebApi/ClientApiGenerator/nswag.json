@@ -49,9 +49,9 @@
       "output": null,
       "outputType": "Swagger2",
       "assemblyPaths": [
-        "../TemplateProductName.WebApi/bin/Debug/netcoreapp3.1/TemplateProductName.WebApi.dll"
+        "../bin/Debug/netcoreapp3.1/TemplateProductName.WebApi.dll"
       ],
-      "assemblyConfig": "../TemplateProductName.WebApi/bin/Debug/netcoreapp3.1/web.config",
+      "assemblyConfig": "../bin/Debug/netcoreapp3.1/web.config",
       "referencePaths": [],
       "useNuGetCache": false
     }
@@ -114,7 +114,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "../TemplateProductName.WebClient/src/services/TemplateProductNameApi.ts"
+      "output": "../../TemplateProductName.WebClient/src/services/TemplateProductNameApi.ts"
     }
   }
 }

@@ -1,20 +1,20 @@
-import User from "../sign-in/User";
-import Api from "../../services/Api";
 import { observable, computed } from "mobx";
 import { toast } from "react-toastify";
+import { UserModel, AuthenticationApi } from "../../services/TemplateProductNameApi";
 
 
 class AppStore {
-    @observable user?: User;
-    userPromise: Promise<User | undefined> = Promise.resolve(undefined);
+    @observable user?: UserModel;
+    userPromise: Promise<UserModel | undefined> = Promise.resolve(undefined);
     @observable isSigningOut: boolean = false;
     @computed get isSignedIn() {
         return this.user != null;
     }
+    private authenticationApi = new AuthenticationApi();
 
     loadUser = () => 
-        this.userPromise = Api
-            .get<{}, User>("/authentication/me")
+        this.userPromise = this.authenticationApi
+            .me()
             .then(result => {
                 this.user = result.data;
                 return result.data
@@ -23,7 +23,8 @@ class AppStore {
 
     signOut = () => {
         this.isSigningOut = true;
-        Api.post("/authentication/signout")
+        this.authenticationApi
+            .signOut()
             .then(response => {
                 if(!response.ok) {
                     toast.error("Something went wrong. Please try again.")
