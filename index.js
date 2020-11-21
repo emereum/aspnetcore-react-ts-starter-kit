@@ -66,6 +66,9 @@ const replace = require("gulp-replace");
                 // Map file contents
                 .pipe(replace(findRegex, replaceValue));
         },
-        gulp.src(__dirname + "/template/**/*"))
+        gulp.src([
+            __dirname + "/template/**/*",
+            __dirname + "/template/**/.*"
+        ]))
         .pipe(gulp.dest("."));
 })();
