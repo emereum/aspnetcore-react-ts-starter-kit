@@ -6,11 +6,7 @@ iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/in
 
 # Dev environment
 & ".\setup-build-environment.ps1"
-cinst visualstudio2019community -y
-cinst visualstudiocode -y
-cinst javaruntime -y
-cinst flyway.commandline --version 4.2.0 -y
-cinst postgresql --version 9.6.8 -y
+cinst visualstudio2019community visualstudiocode javaruntime flyway.commandline postgresql -y
 
 # Configure vscode to use the TypeScript compiler in the workspace rather than
 # vscode's own version. To do this manually, open vscode and click the

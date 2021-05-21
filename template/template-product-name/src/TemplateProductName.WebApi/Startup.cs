@@ -17,8 +17,8 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using TemplateProductName.WebApi.Extensions;
 using TemplateProductName.WebApi.Infrastructure;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace TemplateProductName.WebApi
 {

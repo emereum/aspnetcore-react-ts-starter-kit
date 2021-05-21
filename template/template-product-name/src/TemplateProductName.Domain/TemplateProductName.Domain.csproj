@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Dapper" Version="2.0.35" />
+    <PackageReference Include="FluentNHibernate" Version="2.1.2" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NHibernate" Version="5.2.7" />
@@ -14,12 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TemplateProductName.Common\TemplateProductName.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="FluentNHibernate">
-      <HintPath>C:\Users\root\.nuget\packages\fluentnhibernate\2.1.2\lib\netstandard2.0\FluentNHibernate.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

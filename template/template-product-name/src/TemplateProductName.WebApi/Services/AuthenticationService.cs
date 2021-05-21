@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using TemplateProductName.Domain.Model;
 using TemplateProductName.Domain.Services;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace TemplateProductName.WebApi.Services
 {

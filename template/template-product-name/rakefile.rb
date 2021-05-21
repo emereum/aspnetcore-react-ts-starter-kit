@@ -2,13 +2,14 @@
 
 PROJECT_NAME = "TemplateProductName"
 CONFIGURATION = "Release"
+TARGET_FRAMEWORK_MONIKER = "net5.0"
 
 PROJECT_ROOT_DIR = File.dirname(__FILE__)
 SRC_DIR = File.join(PROJECT_ROOT_DIR, "src")
 SRC_WEB_DIR = File.join(SRC_DIR, "#{PROJECT_NAME}.WebApi")
 SRC_WEBCLIENT_DIR = File.join(SRC_DIR, "#{PROJECT_NAME}.WebClient")
 SRC_TESTS_DIR = File.join(SRC_DIR, "#{PROJECT_NAME}.Tests")
-PUBLISH_WEB_DIR = File.join(SRC_WEB_DIR, "bin", CONFIGURATION , "netcoreapp3.0", "publish")
+PUBLISH_WEB_DIR = File.join(SRC_WEB_DIR, "bin", CONFIGURATION , TARGET_FRAMEWORK_MONIKER, "publish")
 TEST_RESULT_FILE = File.join(PROJECT_ROOT_DIR, "TestResult.xml");
 
 desc "Build #{PROJECT_NAME}.WebApi and #{PROJECT_NAME}.WebClient in Release mode"

@@ -104,8 +104,8 @@ This repository contains several components:
 
 ### A web Api consisting of:
 
-* An ASP.NET Core web Api targeting `netcoreapp3.1`
-* Several projects to support project organisation and design patterns targeting `netstandard2.0`
+* An ASP.NET Core Api targeting `net5.0`
+* Several projects to support project organisation and design patterns targeting `net5.0`
 * [AutoFac](https://autofac.org/)
 * [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
 * [FluentNHibernate](http://www.fluentnhibernate.org/)

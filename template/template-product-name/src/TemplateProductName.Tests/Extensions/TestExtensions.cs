@@ -30,7 +30,7 @@ namespace TemplateProductName.Tests.Extensions
         public static string GetTestFilePath(params string[] parts)
         {
             var assembly = Assembly.GetExecutingAssembly();
-            var codebase = new Uri(assembly.CodeBase);
+            var codebase = new Uri(assembly.Location);
             var path = codebase.LocalPath;
             var thisDirectory = Path.GetDirectoryName(path);
             var file = Path.Combine(new[] { thisDirectory }.Concat(parts).ToArray());

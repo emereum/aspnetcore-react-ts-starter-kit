@@ -1,5 +1,5 @@
 ﻿{
-  "runtime": "NetCore31",
+  "runtime": "Net50",
   "defaultVariables": null,
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
@@ -49,9 +49,9 @@
       "output": null,
       "outputType": "Swagger2",
       "assemblyPaths": [
-        "../bin/Debug/netcoreapp3.1/TemplateProductName.WebApi.dll"
+        "../bin/Debug/net5.0/TemplateProductName.WebApi.dll"
       ],
-      "assemblyConfig": "../bin/Debug/netcoreapp3.1/web.config",
+      "assemblyConfig": "../bin/Debug/net5.0/web.config",
       "referencePaths": [],
       "useNuGetCache": false
     }
