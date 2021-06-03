@@ -1,5 +1,8 @@
+using System;
 using TemplateProductName.Common;
 using TemplateProductName.Common.Errors;
+using TemplateProductName.Domain.Model;
+using TemplateProductName.Domain.Repositories;
 
 namespace TemplateProductName.Domain.Features.CreateDinosaur
 {

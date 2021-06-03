@@ -2,9 +2,8 @@ using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using Autofac;
 using Autofac.Core;
-using NHibernate;
+using Microsoft.EntityFrameworkCore;
 using TemplateProductName.Domain.Repositories;
-using TemplateProductName.Persistence.PostgreSQL;
 
 namespace TemplateProductName.Persistence
 {
@@ -22,19 +21,14 @@ namespace TemplateProductName.Persistence
 
         protected override void Load(ContainerBuilder builder)
         {
-            // Session factory builder
-            builder.Register(x => PostgreSqlSessionFactoryBuilder.Build(connectionString, mappingAssembly))
-                .As<ISessionFactory>()
-                .SingleInstance();
-
-            // ISession
+            // DbContext
             builder.Register(x =>
                 {
-                    var session = x.Resolve<ISessionFactory>().OpenSession();
-                    session.FlushMode = FlushMode.Commit;
-                    return session;
+                    var optionsBuilder = new DbContextOptionsBuilder<TemplateProductNameDbContext>();
+                    optionsBuilder.UseNpgsql(connectionString);
+                    return new TemplateProductNameDbContext(optionsBuilder.Options, mappingAssembly);
                 })
-                .As<ISession>()
+                .As<DbContext>()
                 .InstancePerLifetimeScope()
                 .ExternallyOwned()
                 .OnActivated(BeginSession)
@@ -42,27 +36,27 @@ namespace TemplateProductName.Persistence
 
             // IDbConnection (exposed because there may be cases where we need
             // to use Dapper)
-            builder.Register(x => x.Resolve<ISession>().Connection)
+            builder.Register(x => x.Resolve<DbContext>().Database.GetDbConnection())
                 .As<IDbConnection>()
                 .InstancePerLifetimeScope()
                 .ExternallyOwned();
 
             // IUnitOfWork
-            builder.RegisterType<NHibernateUnitOfWork>()
+            builder.RegisterType<EFCoreUnitOfWork>()
                 .As<IUnitOfWork>()
                 .InstancePerLifetimeScope()
                 .ExternallyOwned();
 
             // IRepository
-            builder.RegisterType<NHibernateRepository>()
+            builder.RegisterType<EFCoreRepository>()
                 .As<IRepository>()
                 .InstancePerLifetimeScope();
         }
 
-        private void BeginSession(IActivatedEventArgs<ISession> args)
+        private void BeginSession(IActivatedEventArgs<DbContext> args)
         {
-            var session = args.Instance;
-            session.BeginTransaction();
+            var context = args.Instance;
+            context.Database.BeginTransaction();
         }
 
         /// <summary>
@@ -73,26 +67,27 @@ namespace TemplateProductName.Persistence
         /// successful.
         /// </summary>
         /// <param name="session">The session to close.</param>
-        private void EndSession(ISession session)
+        private void EndSession(DbContext context)
         {
             try
             {
+                context.SaveChanges();
+
                 // If the user hasn't closed the transaction through an
                 // IUnitOfWork, close it now.
-                if (session.Transaction.IsActive)
+                if (context.Database.CurrentTransaction != null)
                 {
-                    session.Transaction.Commit();
+                    context.Database.CurrentTransaction.Commit();
                 }
             }
             catch
             {
-                session.Transaction.Rollback();
+                context.Database.CurrentTransaction.Rollback();
                 throw;
             }
             finally
             {
-                session.Close();
-                session.Dispose();
+                context.Dispose();
             }
         }
     }

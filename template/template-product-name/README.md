@@ -85,6 +85,25 @@ Please read the source code documentation on `ICommandHandler` and `IQueryHandle
 
 To paginate a query response make your query inherit from `PaginationOptions` and use the `PaginationExtensions.Paginate` extension method in your `IQueryHandler` implementation to return a paginated response.
 
+### Persistence
+
+This project uses EF Core for persistence and assumes you are using PostgreSQL. The following packages have been included:
+
+* `Microsoft.EntityFrameworkCore` (For general EF Core functionality)
+* `Microsoft.EntityFrameworkCore.Relational` (For relational database mapping methods like `.ToTable("TableName")`
+
+The `TemplateProductName.Domain` project has DDD-style persistence interfaces named `IRepository` and `IUnitOfWork`. The `TemplateProductName.Persistence` project provides implementations for these interfaces using EF Core.
+
+When a developer needs to interact with the persistence layer (which should typically be done only in an `ICommandHandler` or `IQueryHandler`) they should request an `IRepository` in the constructor and use it retrieve and store data. A transaction is automatically created at the beginning of a request and committed (or rolled back if an error occurs) at the end of the request. See `TemplateProductName.Persistence.PersistenceModule` for transaction implementation details.
+
+If a developer needs to perform complex or optimised queries they can request an `IDbConnection` and use Dapper to write SQL directly.
+
+When a developer needs to persist a new object type they should create a mapping file in `TemplateProductName.Domain.Model.Mappings` which implements `IEntityTypeConfiguration<>`. The developer can then refer to EF Core's fluent documentation to map their object. All mappings are automatically found and loaded on application startup as long as they implement `IEntityTypeConfiguration<>` and are within the `TemplateProductName.Domain` project.
+
+#### Database Migrations
+
+No database migration solutions have been provided other than a call to `dbContext.Database.EnsureCreated()` in `Startup` which blindly creates the schema if it doesn't exist. This is adequate for initial prototyping. Once you outgrow this consider switching to EF Core Migrations.
+
 ## Folder structure
 
 `TemplateProductName.Domain.Features`
@@ -107,9 +126,8 @@ This repository contains several components:
 * An ASP.NET Core Api targeting `net5.0`
 * Several projects to support project organisation and design patterns targeting `net5.0`
 * [AutoFac](https://autofac.org/)
+* [EF Core](https://docs.microsoft.com/en-us/ef/core/)
 * [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
-* [FluentNHibernate](http://www.fluentnhibernate.org/)
-* [NHibernate](http://nhibernate.info/) + integration with PostgreSQL
 * [NSubstitute](http://nsubstitute.github.io/)
 * [xUnit](https://xunit.github.io/)
 

@@ -19,6 +19,7 @@ using TemplateProductName.WebApi.Extensions;
 using TemplateProductName.WebApi.Infrastructure;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 namespace TemplateProductName.WebApi
 {
@@ -64,12 +65,6 @@ namespace TemplateProductName.WebApi
                     // Apps that span multiple timezones should remove this
                     // and communicate times in UTC.
                     jsonOptions.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
-
-                    // Don't serialize NHibernate properties on entities.
-                    jsonOptions.SerializerSettings.ContractResolver = new NHibernateContractResolver
-                    {
-                        NamingStrategy = new CamelCaseNamingStrategy()
-                    };
                 });
 
             services
@@ -110,6 +105,14 @@ namespace TemplateProductName.WebApi
         {
             // For pipeline ordering, see https://docs.microsoft.com/en-us/aspnet/core/security/gdpr?view=aspnetcore-3.0
             // also see https://docs.microsoft.com/en-us/aspnet/core/migration/22-to-30?view=aspnetcore-3.0
+
+            // Create database - for prototyping only. Switch to EF Core Migrations for prod.
+            using(var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var client = scope.ServiceProvider.GetRequiredService<DbContext>();
+                client.Database.CurrentTransaction.Commit();
+                client.Database.EnsureCreated();
+            }
 
             if(env.IsDevelopment())
             {

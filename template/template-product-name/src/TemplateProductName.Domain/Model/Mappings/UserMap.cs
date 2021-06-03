@@ -1,21 +1,37 @@
-using FluentNHibernate.Mapping;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace TemplateProductName.Domain.Model.Mappings
 {
-    public class UserMap : ClassMap<User>
+    public class UserMap : IEntityTypeConfiguration<User>
     {
-        public UserMap()
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            Table("users");
+            builder.ToTable("users");
 
-            Id(x => x.Id, "id").GeneratedBy.Assigned();
-            Map(x => x.Email, "email").Not.Nullable().Length(64);
-            Map(x => x.LastLogin, "last_login").Nullable();
-            Component(x => x.Password, p =>
-            {
-                p.Map(x => x.Hash, "password_hash").Not.Nullable().Length(128);
-                p.Map(x => x.Salt, "password_salt").Not.Nullable().Length(128);
-            });
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id)
+                .HasColumnName("id")
+                .ValueGeneratedNever();
+
+            builder.Property(x => x.Email)
+                .HasColumnName("email")
+                .IsRequired();
+
+            builder.Property(x => x.LastLogin)
+                .HasColumnName("last_login");
+
+            var passwordBuilder = builder.OwnsOne(x => x.Password);
+
+            passwordBuilder
+                .Property(x => x.Hash)
+                .HasColumnName("password_hash")
+                .IsRequired();
+
+            passwordBuilder
+                .Property(x => x.Salt)
+                .HasColumnName("password_salt")
+                .IsRequired();
         }
     }
 }
