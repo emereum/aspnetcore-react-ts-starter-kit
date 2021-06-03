@@ -1,8 +1,8 @@
 import Bind from "./Bind";
 import ValidationErrors from "./ValidationErrors";
 
-interface IBindConfigOptions {
-    context: any;
+interface IBindConfigOptions<TContext> {
+    context: TContext;
     errors?: ValidationErrors;
 }
 
@@ -11,8 +11,8 @@ interface IBindConfigOptions {
  * usually constant for a given component so this saves us having to specify
  * them for every binding used in a component.
  */
-function BindConfig(options: IBindConfigOptions) {
-    return (property: string, onChange?: (e: React.SyntheticEvent<any>, data?: { value: any }) => void, errorProperty?: string) =>
+function BindConfig<TContext>(options: IBindConfigOptions<TContext>) {
+    return (property: keyof TContext, onChange?: (e: React.SyntheticEvent<any>, data?: { value: any }) => void, errorProperty?: string) =>
         Bind(options.context, property, onChange, options.errors, errorProperty);
 }
 
